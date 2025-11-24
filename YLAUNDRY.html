@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YLAUNDRY</title>
+<style>
+  /* ========== ROOT & THEME ========== */
+  :root{
+    --bg:#0a0f1c;
+    --card:#0c1323;
+    --accent:#4fc3f7;
+    --accent-2:#00b0ff;
+    --muted:#b0bec5;
+    --glass: rgba(79,195,247,0.05);
+    --radius:12px;
+    --shadow:0 4px 12px rgba(0,0,0,0.5);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Poppins', sans-serif;
+    background: linear-gradient(180deg,#080c16,#0a0f1c);
+    color:#e6eef6;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:20px;
+  }
+
+  .wrap{
+    max-width:600px;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+
+  /* ========== HEADER ========== */
+  .logo{
+    font-size:28px;
+    font-weight:700;
+    text-align:center;
+    color:var(--accent);
+    text-shadow:0 0 6px var(--accent),0 0 12px var(--accent-2);
+    margin-bottom:10px;
+  }
+
+  /* ========== HERO ========== */
+  .hero{
+    text-align:center;
+  }
+  .hero h1{
+    font-size:24px;
+    color:#fff;
+    text-shadow:0 0 6px var(--accent);
+    margin-bottom:6px;
+  }
+  .hero p{
+    font-size:14px;
+    color:var(--muted);
+  }
+
+  /* ========== LAYANAN ========== */
+  .services{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .service-card{
+    background:var(--card);
+    padding:14px;
+    border-radius:var(--radius);
+    text-align:center;
+    color:#fff;
+    box-shadow:0 0 8px rgba(0,0,0,0.5);
+    transition:0.25s;
+  }
+  .service-card h3{
+    font-size:16px;
+    margin-bottom:6px;
+    text-shadow:0 0 4px var(--accent);
+  }
+  .service-card p{
+    font-size:12px;
+    color:var(--muted);
+  }
+  .service-card:hover{
+    box-shadow:0 0 12px var(--accent),0 0 20px var(--accent-2);
+    transform:translateY(-2px);
+  }
+
+  @media(max-width:500px){
+    .services{
+      grid-template-columns:1fr;
+    }
+  }
+
+  /* ========== FORM PEMESANAN ========== */
+  .order-form{
+    background:var(--card);
+    padding:16px;
+    border-radius:var(--radius);
+    box-shadow:0 0 10px rgba(0,0,0,0.5);
+    transition:0.3s;
+  }
+
+  /* Hover efek untuk form */
+  .order-form:hover{
+    box-shadow:0 0 20px var(--accent), 0 0 35px var(--accent-2);
+    transform: translateY(-3px);
+  }
+
+  .order-form h2{
+    text-align:center;
+    font-size:18px;
+    margin-bottom:10px;
+    color:#fff;
+    text-shadow:0 0 6px var(--accent);
+  }
+  .order-form label{
+    display:block;
+    margin-top:10px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .order-form input, .order-form select, .order-form textarea{
+    width:100%;
+    padding:8px;
+    margin-top:4px;
+    border-radius:8px;
+    border:1px solid rgba(79,195,247,0.2);
+    background:#112240;
+    color:#fff;
+    font-size:14px;
+    outline:none;
+    box-shadow: inset 0 0 4px rgba(79,195,247,0.05);
+    transition:0.2s;
+  }
+  .order-form input:focus, .order-form select:focus, .order-form textarea:focus{
+    border-color:var(--accent-2);
+    box-shadow:0 0 8px var(--accent-2) inset;
+  }
+
+  .order-form button{
+    margin-top:14px;
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:#fff;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 0 12px var(--accent),0 0 20px var(--accent-2);
+    transition:0.25s;
+  }
+  .order-form button:hover{
+    transform:scale(1.03);
+    box-shadow:0 0 18px var(--accent),0 0 28px var(--accent-2);
+  }
+
+  /* ========== SUMMARY ========== */
+  .summary{
+    margin-top:10px;
+    background:var(--glass);
+    padding:10px;
+    border-radius:10px;
+    border:1px solid rgba(79,195,247,0.15);
+    color:#fff;
+    font-size:13px;
+    box-shadow:0 0 6px var(--accent) inset;
+  }
+
+  /* ========== FOOTER ========== */
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- LOGO -->
+  <div class="logo">YLAUNDRY</div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Pesan Laundry & Cleaning Cepat</h1>
+    <p>Layanan hemat tempat, langsung terhubung ke WhatsApp</p>
+  </section>
+
+  <!-- LAYANAN -->
+  <section class="services">
+    <div class="service-card">
+      <h3>Laundry Kiloan</h3>
+      <p>Cuci pakaian per kg, cepat dan rapi</p>
+    </div>
+    <div class="service-card">
+      <h3>Laundry Sepatu</h3>
+      <p>Bersihkan & poles sepatu favoritmu</p>
+    </div>
+    <div class="service-card">
+      <h3>Bersih Rumah</h3>
+      <p>Pembersihan rumah dan kamar</p>
+    </div>
+    <div class="service-card">
+      <h3>Bersih Mobil</h3>
+      <p>Detailing & cuci mobil sampai kinclong</p>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section class="order-form" id="orderForm">
+    <h2>Form Pemesanan</h2>
+    <label for="service">Layanan</label>
+    <select id="service">
+      <option value="">-- Pilih Layanan --</option>
+      <option value="Laundry Kiloan">Laundry Kiloan</option>
+      <option value="Laundry Sepatu">Laundry Sepatu</option>
+      <option value="Bersih Rumah">Bersih Rumah</option>
+      <option value="Bersih Mobil">Bersih Mobil</option>
+    </select>
+
+    <label for="quantity">Jumlah (kg / item / area)</label>
+    <input type="number" id="quantity" placeholder="Masukkan jumlah">
+
+    <label for="name">Nama</label>
+    <input type="text" id="name" placeholder="Nama Anda">
+
+    <label for="address">Alamat</label>
+    <textarea id="address" placeholder="Alamat lengkap"></textarea>
+
+    <div class="summary" id="summary">Ringkasan pesanan akan muncul di sini</div>
+
+    <button onclick="sendWA()">Pesan via WhatsApp</button>
+  </section>
+  <footer style="text-align:center; padding:12px; font-size:13px; color:#ffffff;">
+  &copy; 2025 YUNUS PABETTENG. All rights reserved.
+</footer>
+
+
+</div>
+
+<script>
+const service = document.getElementById('service');
+const quantity = document.getElementById('quantity');
+const name = document.getElementById('name');
+const address = document.getElementById('address');
+const summary = document.getElementById('summary');
+
+function updateSummary(){
+  summary.innerHTML = `
+    <strong>Layanan:</strong> ${service.value || '-'}<br>
+    <strong>Jumlah:</strong> ${quantity.value || '-'}<br>
+    <strong>Nama:</strong> ${name.value || '-'}<br>
+    <strong>Alamat:</strong> ${address.value || '-'}
+  `;
+}
+
+service.addEventListener('change', updateSummary);
+quantity.addEventListener('input', updateSummary);
+name.addEventListener('input', updateSummary);
+address.addEventListener('input', updateSummary);
+
+function sendWA(){
+  if(!service.value || !quantity.value || !name.value || !address.value){
+    alert('Harap isi semua field!');
+    return;
+  }
+  let text = `Halo, saya ingin memesan:\n- Layanan: ${service.value}\n- Jumlah: ${quantity.value}\n- Nama: ${name.value}\n- Alamat: ${address.value}`;
+  let waLink = `https://wa.me/628123456789?text=${encodeURIComponent(text)}`;
+  window.open(waLink,'_blank');
+}
+</script>
+
+</body>
+</html>

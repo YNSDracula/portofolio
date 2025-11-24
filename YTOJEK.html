@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YTOJEX</title>
+  <meta name="description" content="Sistem pemesanan ojek online sederhana — pesan lewat website lalu terkirim ke WhatsApp admin.">
+
+<style>
+    :root{
+      --bg:#05060a;
+      --card:#0d1117;
+      --muted:#98a0b3;
+      --accent:#00ffd5;
+      --accent-2:#6cffb6;
+      --glass: rgba(255,255,255,0.04);
+      --danger:#ff6b6b;
+      --success:#7bf59c;
+      --radius:14px;
+      --maxw:980px;
+      --gap:16px;
+      --shadow: 0 0 25px rgba(0,255,213,0.08);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0; padding:0; background:#030507; color:#e6eef6;}
+
+    body{
+      background: radial-gradient(circle at top, #08131f 0%, #020307 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding: 18px;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+    }
+
+    /* WRAPPER */
+    .wrap{
+      width:100%;
+      max-width:var(--maxw);
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* Responsive */
+    @media(max-width:980px){
+      .wrap{
+        grid-template-columns:1fr;
+        gap:22px;
+      }
+    }
+
+    @media(max-width:440px){
+      body{padding:10px;}
+      .card{padding:16px !important;}
+      .wrap{gap:16px;}
+    }
+
+    /* CARD */
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:22px;
+      border: 1px solid rgba(0,255,213,0.15);
+      box-shadow: 0 0 12px rgba(0,255,213,0.12);
+      backdrop-filter: blur(6px);
+      transition:0.25s ease;
+    }
+
+    /* Hover glow */
+    .card:hover{
+      box-shadow:0 0 25px rgba(0,255,213,0.22);
+      border-color:rgba(0,255,213,0.35);
+      transform:translateY(-3px);
+    }
+
+    h1{margin:0 0 6px;font-size:20px; text-shadow:0 0 6px rgba(0,255,213,0.3);}
+
+    p.lead{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:6px;
+      text-shadow:0 0 4px rgba(255,255,255,0.12);
+    }
+
+    .row{display:flex; gap:12px; margin-bottom:14px;}
+    .col{flex:1;}
+
+    input, textarea, select{
+      width:100%;
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid rgba(0,255,213,0.15);
+      background:rgba(13,17,23,0.85);
+      color:#e0fff5;
+      font-size:14px;
+      outline:none;
+      transition:0.2s;
+      box-shadow:0 0 6px rgba(0,255,213,0.05) inset;
+    }
+
+    input:focus, textarea:focus, select:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 10px rgba(0,255,213,0.45), 0 0 4px rgba(0,255,213,0.35) inset;
+    }
+
+    textarea{min-height:88px;}
+
+    .small{font-size:12px;color:var(--muted); margin-top:4px;}
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      margin-top:10px;
+    }
+
+    .btn{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#001218;
+      border:none;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow:0 0 12px rgba(0,255,213,0.35);
+      transition:0.2s;
+    }
+
+    .btn:hover{
+      transform:scale(1.04);
+      box-shadow:0 0 20px rgba(0,255,213,0.5);
+    }
+
+    .btn.ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.08);
+      color:var(--muted);
+      box-shadow:none;
+    }
+
+    .btn.red{
+      background:linear-gradient(90deg,#ff6b6b,#ff9b9b);
+      box-shadow:0 0 12px rgba(255,80,80,0.35);
+    }
+
+    .summary{
+      margin-top:16px;
+      padding:16px;
+      background:rgba(255,255,255,0.04);
+      border-radius:12px;
+      border:1px solid rgba(0,255,213,0.12);
+      font-size:14px;
+      color:var(--muted);
+      box-shadow:0 0 10px rgba(0,255,213,0.15) inset;
+    }
+
+    .line{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:8px;
+    }
+
+    .price{
+      color:var(--accent-2);
+      font-weight:700;
+      font-size:18px;
+      text-shadow:0 0 6px rgba(0,255,213,0.35);
+    }
+
+    /* Sidebar */
+    .aside{width:100%;}
+
+    .brand{
+      display:flex;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+.logo {
+  width: 80px;              /* sebelumnya 62px, sekarang lebih besar */
+  height: 80px;             /* sebelumnya 62px */
+  border-radius:14px;       /* bisa diperbesar sedikit */
+  background:linear-gradient(135deg,#062028,#07383e);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:var(--accent);
+  box-shadow: 0 0 12px var(--accent), 0 0 25px var(--accent), inset 0 -6px 18px rgba(0,0,0,0.5);
+  font-size:22px;           /* teks lebih proporsional dengan kotak */
+  text-shadow:0 0 6px var(--accent), 0 0 12px var(--accent-2);
+  transition:0.2s;
+}
+
+.logo:hover {
+  box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent-2), inset 0 -6px 18px rgba(0,0,0,0.5);
+  transform: scale(1.05);
+}
+
+
+    .hint{
+      background:rgba(255,255,255,0.04);
+      padding:12px;
+      border-radius:10px;
+      margin-top:12px;
+      font-size:13px;
+      border:1px solid rgba(0,255,213,0.12);
+      box-shadow:0 0 8px rgba(0,255,213,0.12) inset;
+    }
+
+    footer{
+      text-align:center;
+      margin-top:18px;
+      font-size:13px;
+      color:var(--muted);
+      text-shadow:0 0 4px rgba(255,255,255,0.1);
+    }
+</style>
+
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- LEFT FORM -->
+    <!-- (FORM TETAP SAMA, TIDAK SAYA UBAH) -->
+    
+    <!-- copy semua form milikmu di sini, tidak saya potong -->
+
+    <!-- LEFT: Form -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div>
+          <h1>YTOJEX</h1>
+          <p class="lead">Pelanggan pesan lewat web, order otomatis terkirim ke WhatsApp admin. Mudah dijalankan di kota kecil.</p>
+        </div>
+        <div class="chip">Beta • Lokal</div>
+      </div>
+
+      <form id="orderForm" autocomplete="off" onsubmit="return false;">
+        <label for="service">Pilih Layanan</label>
+        <select id="service" required>
+          <option value="ojek">Ojek Penumpang</option>
+          <option value="antar">Antar Barang</option>
+          <option value="makanan">Antar Makanan</option>
+          <option value="titip">Titip / Belanja</option>
+        </select>
+
+        <div class="row">
+          <div class="col">
+            <label for="name">Nama Pemesan</label>
+            <input id="name" type="text" placeholder="Nama lengkap" required>
+          </div>
+          <div class="col">
+            <label for="phone">No. WhatsApp</label>
+            <input id="phone" type="text" placeholder="08xx..." required>
+          </div>
+        </div>
+
+        <label for="pickup">Alamat Jemput</label>
+        <input id="pickup" type="text" placeholder="Jl. Contoh No. 1, Kecamatan ..." required>
+
+        <label for="drop">Alamat Tujuan</label>
+        <input id="drop" type="text" placeholder="Jl. Contoh No. 20, Kecamatan ..." required>
+
+        <div class="row">
+          <div class="col">
+            <label for="distance">Jarak (km)</label>
+            <input id="distance" type="number" min="0" step="0.1" placeholder="Masukkan jarak (mis. 3.2)" required>
+            <div class="small">Isi jarak manual. Jika belum tahu, estimasi jarak antar alamat pakai Google Maps lalu masukkan hasil (km).</div>
+          </div>
+          <div style="width:160px">
+            <label for="weight">Berat / Catatan</label>
+            <input id="weight" type="text" placeholder="opsional, contoh: 2kg / tanpa barang">
+          </div>
+        </div>
+
+        <div class="row" style="align-items:center">
+          <div class="col">
+            <label for="pricePerKm">Tarif per km (Rp)</label>
+            <input id="pricePerKm" type="number" min="0" value="2000" required>
+            <div class="small">Ubah tarif per km sesuai standar wilayahmu (mis. 1500 - 4000).</div>
+          </div>
+          <div style="width:160px">
+            <label for="baseFare">Tarif minimum (Rp)</label>
+            <input id="baseFare" type="number" min="0" value="8000" required>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn" id="calcBtn" type="button">Hitung Tarif</button>
+          <button class="btn ghost" id="resetBtn" type="button">Reset</button>
+          <div style="flex:1"></div>
+          <button class="btn" id="waBtn" type="button">Kirim ke WhatsApp</button>
+        </div>
+
+        <div class="summary" id="summary">
+          <div class="line"><div>Estimasi Tarif</div><div class="price" id="priceDisplay">—</div></div>
+          <div class="line"><div>Per km</div><div id="perKmDisplay">—</div></div>
+          <div class="line"><div>Tarif minimum</div><div id="minDisplay">—</div></div>
+          <div class="line"><div>Komisi (default)</div><div id="commissionDisplay">—</div></div>
+          <div class="line"><div>Status</div><div id="status">Siap</div></div>
+          <div style="margin-top:8px;font-size:13px;color:var(--muted)">
+            <strong>Catatan:</strong> tarif final disepakati saat driver tiba. Sistem awal masih manual (admin & driver).
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- RIGHT: Info -->
+    <div class="aside">
+      <div class="card" style="padding:18px">
+        <div class="brand">
+          <div class="logo">YTOJEX</div>
+          <div>
+            <h2>YTOJEX Lokal</h2>
+            <p>Order ojek & antar cepat untuk <strong>kota kamu</strong>. Mulai dari sistem sederhana — bisa berkembang jadi aplikasi.</p>
+          </div>
+        </div>
+
+        <div class="hint">
+          <div style="font-weight:700;margin-bottom:8px">Langkah cepat menjalankan:</div>
+          <ol style="margin:0 0 8px 16px;color:var(--muted);font-size:13px">
+            <li>Pasang file ini di hosting atau buka di browser.</li>
+            <li>Ubah nomor admin WhatsApp di script (lihat komentar).</li>
+            <li>Promosikan via grup lokal / WA / FB.</li>
+            <li>Rekrut 5 driver awal (WA grup).</li>
+          </ol>
+          <div class="small">Jika butuh, aku bisa bantu sesuaikan tampilannya (warna, logo, teks), atau ubah agar terhubung ke Google Forms / Google Sheets sebagai backup data.</div>
+        </div>
+
+        <div class="help">
+          <h3 style="margin:12px 0 8px">Pengaturan penting (di script):</h3>
+          <ul style="padding-left:16px;color:var(--muted);font-size:13px">
+            <li><strong>ADMIN_WHATSAPP:</strong> nomor admin untuk mengirim order</li>
+            <li><strong>DEFAULT_COMMISSION_PERCENT:</strong> persentase komisi yang diharapkan</li>
+            <li><strong>Tarif per km & minimum:</strong> bisa diubah di form</li>
+          </ul>
+        </div>
+
+       <footer style="text-align:center; padding:12px; font-size:13px; color:#ffffff;">
+  &copy; 2025 YUNUS PABETTENG. All rights reserved.
+</footer>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========== PENGATURAN AWAL (ubah sesuai kebutuhan) ==========
+    // Nomor admin untuk mengirim WhatsApp (format internasional tanpa +, contoh: 6281234567890)
+    const ADMIN_WHATSAPP = "6281234567890"; // <-- GANTI NOMOR INI DENGAN NOMOR ADMIN KAMU
+
+    // Persentase komisi yang biasanya diambil (untuk estimasi / catatan)
+    const DEFAULT_COMMISSION_PERCENT = 10; // 10% (ubah jika mau)
+
+    // ======================= LOGIKA ============================
+    const el = id => document.getElementById(id);
+    const nameInput = el('name');
+    const phoneInput = el('phone');
+    const pickupInput = el('pickup');
+    const dropInput = el('drop');
+    const distanceInput = el('distance');
+    const pricePerKmInput = el('pricePerKm');
+    const baseFareInput = el('baseFare');
+    const weightInput = el('weight');
+    const serviceSelect = el('service');
+
+    const priceDisplay = el('priceDisplay');
+    const perKmDisplay = el('perKmDisplay');
+    const minDisplay = el('minDisplay');
+    const commissionDisplay = el('commissionDisplay');
+    const statusDisplay = el('status');
+
+    const calcBtn = el('calcBtn');
+    const resetBtn = el('resetBtn');
+    const waBtn = el('waBtn');
+
+    function currency(n){
+      return 'Rp ' + Number(n).toLocaleString('id-ID');
+    }
+
+    function calculateFare(){
+      const km = parseFloat(distanceInput.value) || 0;
+      const perKm = parseFloat(pricePerKmInput.value) || 0;
+      const base = parseFloat(baseFareInput.value) || 0;
+
+      // Formula: fare = max(base, perKm * km)
+      const raw = perKm * km;
+      const fare = Math.max(base, Math.round(raw));
+
+      const commission = Math.round(fare * (DEFAULT_COMMISSION_PERCENT/100));
+      return {fare, perKm, base, commission, raw};
+    }
+
+    function updateSummary(){
+      const {fare, perKm, base, commission, raw} = calculateFare();
+      priceDisplay.innerText = currency(fare);
+      perKmDisplay.innerText = currency(perKm) + ' / km';
+      minDisplay.innerText = currency(base);
+      commissionDisplay.innerText = currency(commission) + ` (${DEFAULT_COMMISSION_PERCENT}% dari estimasi)`;
+      statusDisplay.innerText = 'Siap dikirim ke admin';
+    }
+
+    calcBtn.addEventListener('click', ()=>{
+      // simple validation
+      if(!nameInput.value || !phoneInput.value || !pickupInput.value || !dropInput.value || !distanceInput.value){
+        alert('Mohon isi semua field yang wajib (nama, WA, alamat jemput, alamat tujuan, jarak).');
+        return;
+      }
+      updateSummary();
+      // scroll ke ringkasan
+      document.getElementById('summary').scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+
+    resetBtn.addEventListener('click', ()=>{
+      document.getElementById('orderForm').reset();
+      priceDisplay.innerText = '—';
+      perKmDisplay.innerText = '—';
+      minDisplay.innerText = '—';
+      commissionDisplay.innerText = '—';
+      statusDisplay.innerText = 'Siap';
+    });
+
+    waBtn.addEventListener('click', ()=>{
+      // validate
+      if(!nameInput.value || !phoneInput.value || !pickupInput.value || !dropInput.value || !distanceInput.value){
+        alert('Mohon isi semua field yang wajib (nama, WA, alamat jemput, alamat tujuan, jarak).');
+        return;
+      }
+
+      const {fare, perKm, base, commission, raw} = calculateFare();
+
+      const service = serviceSelect.options[serviceSelect.selectedIndex].text;
+      const name = nameInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const pickup = pickupInput.value.trim();
+      const drop = dropInput.value.trim();
+      const distance = Number(distanceInput.value).toFixed(2);
+      const weight = weightInput.value.trim();
+
+      // Format pesan WA
+      let message = `*Order Baru — OJEX*\n`;
+      message += `Layanan: *${service}*\n`;
+      message += `Nama: *${name}*\n`;
+      message += `No WA: ${phone}\n`;
+      message += `Jemput: ${pickup}\n`;
+      message += `Tujuan: ${drop}\n`;
+      message += `Jarak: ${distance} km\n`;
+      if(weight) message += `Catatan: ${weight}\n`;
+      message += `Estimasi Tarif: *${currency(fare)}*\n`;
+      message += `Tarif per km: ${currency(perKm)}\n`;
+      message += `Tarif minimum: ${currency(base)}\n`;
+      message += `Estimasi komisi: ${currency(commission)} (${DEFAULT_COMMISSION_PERCENT}%)\n\n`;
+      message += `Mohon konfirmasi driver. Terima kasih.`;
+
+      // WhatsApp URL
+      // ADMIN_WHATSAPP must be set in international format without + (e.g., 62812xxxx)
+      const phoneNumber = ADMIN_WHATSAPP || '';
+      if(!phoneNumber){
+        alert('Nomor admin WhatsApp belum diset. Silakan ubah nilai ADMIN_WHATSAPP di script.');
+        return;
+      }
+
+      const waUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+      // open whatsapp
+      window.open(waUrl, '_blank');
+    });
+
+    // auto set year
+    document.getElementById('year').innerText = new Date().getFullYear();
+
+    // init summary shows defaults
+    updateSummary();
+
+    // Optional: allow pressing Enter to calculate
+    document.getElementById('orderForm').addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        calcBtn.click();
+      }
+    });
+
+  </script>
+</body>
+</html>
