@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SAYUR KELILING</title>
+  <meta name="description" content="Website sederhana untuk penjual sayur keliling: update lokasi, stok real-time, pre-order via WhatsApp." />
+<style>
+    :root{
+      --bg:#0f1720;
+      --card:#0b1220;
+      --accent:#10b981;
+      --accent-2:#34d399;
+      --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.04);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;
+      color:#e6eef7;
+      background: radial-gradient(circle at top, #071022 0%, #071733 100%);
+      min-height:100vh;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .wrap{width:100%;max-width:980px}
+
+    header{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:18px;
+    }
+
+    h1{
+      font-size:20px;
+      margin:0;
+      color:var(--accent);
+      text-shadow:0 0 6px rgba(16,185,129,0.6);
+    }
+
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      text-shadow:0 0 3px rgba(255,255,255,0.1);
+    }
+
+    .grid{display:grid;grid-template-columns:1fr 380px;gap:16px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr;}}
+
+    /* CARD */
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+      padding:14px;
+      border-radius:12px;
+      box-shadow:0 0 18px rgba(16,185,129,0.2);
+      border:1px solid rgba(16,185,129,0.2);
+      backdrop-filter: blur(6px);
+      transition:0.25s ease;
+    }
+
+    .card:hover{
+      box-shadow:0 0 30px rgba(16,185,129,0.35);
+      border-color:rgba(16,185,129,0.35);
+      transform:translateY(-2px);
+    }
+
+    .section-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:10px;
+    }
+
+    .small{font-size:13px;color:var(--muted)}
+
+    /* Status (tetap original) */
+    .status{display:flex;gap:10px;align-items:center}
+    .pill{padding:8px 10px;border-radius:999px;background:var(--glass);font-weight:600}
+    .near{color:#083f2a;background:linear-gradient(90deg,#10b98122,#10b98111);border:1px solid rgba(16,185,129,0.12)}
+	.pill.near {
+    color: #ffffff !important; /* teks jadi putih */
+}
+
+    /* list */
+    ul.items{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+    li.item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:8px;
+      border-radius:8px;
+      background:rgba(16,185,129,0.02);
+      box-shadow:0 0 6px rgba(16,185,129,0.1);
+      transition:0.2s;
+    }
+
+    li.item:hover{
+      box-shadow:0 0 12px rgba(16,185,129,0.25);
+      transform:translateY(-1px);
+    }
+
+    .meta{display:flex;gap:10px;align-items:center}
+    .qty{font-weight:700}
+
+    /* seller panel */
+    .seller-panel{display:flex;flex-direction:column;gap:10px}
+
+    input[type=text], input[type=number], select, textarea{
+      width:100%;
+      padding:8px;
+      border-radius:8px;
+      border:1px solid rgba(16,185,129,0.15);
+      background:rgba(11,18,32,0.85);
+      color:#e0fff5;
+      outline:none;
+      box-shadow:0 0 4px rgba(16,185,129,0.1) inset;
+      transition:0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus{
+      border-color:var(--accent-2);
+      box-shadow:0 0 10px rgba(16,185,129,0.35), 0 0 4px rgba(16,185,129,0.2) inset;
+    }
+
+    button{
+      background:var(--accent);
+      color:#022;
+      border:none;
+      padding:8px 12px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 0 12px rgba(16,185,129,0.35);
+      transition:0.2s;
+    }
+
+    button:hover{
+      transform:scale(1.05);
+      box-shadow:0 0 20px rgba(16,185,129,0.5);
+    }
+
+    button.ghost{
+      background:transparent;
+      border:1px solid rgba(16,185,129,0.2);
+      color:var(--muted);
+      box-shadow:none;
+    }
+
+    .row{display:flex;gap:8px}
+    .row > *{flex:1}
+    .pin{font-size:12px;color:var(--muted)}
+
+    footer{
+      margin-top:14px;
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      text-shadow:0 0 3px rgba(255,255,255,0.1);
+    }
+
+    .wa-btn{
+      display:inline-block;
+      padding:8px 12px;
+      background:#25D366;
+      color:#052;
+      border-radius:10px;
+      font-weight:700;
+      box-shadow:0 0 12px rgba(37,211,102,0.35);
+      transition:0.2s;
+    }
+
+    .wa-btn:hover{
+      transform:scale(1.05);
+      box-shadow:0 0 22px rgba(37,211,102,0.5);
+    }
+
+    .hint{font-size:13px;color:var(--muted)}
+</style>
+
+
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>PENJUAL SAYUR KELILING--REAL TIME</h1>
+        <p class="lead">Lihat apakah penjual hadir hari ini &amp; stok sayur — pelanggan bisa pesan via WhatsApp</p>
+      </div>
+      <div class="small">Demo: butuh Firebase untuk real-time. Lihat catatan di bawah.</div>
+    </header>
+
+    <div class="grid">
+      <!-- Left: Customer view -->
+      <div class="card">
+        <div class="section-title">
+          <strong>Status Penjual</strong>
+          <span class="small">Last update: <span id="lastUpdate">-</span></span>
+        </div>
+        <div class="status">
+          <div id="statusText" class="pill">Penjual belum update</div>
+          <div id="nearPill" class="pill near" style="display:none">Sedang dekat</div>
+        </div>
+
+        <hr style="margin:12px 0;border:none;border-top:1px solid rgba(255,255,255,0.02)">
+
+        <div class="section-title">
+          <strong>Daftar Sayur Hari Ini</strong>
+          <span class="small">Cek sebelum keluar rumah</span>
+        </div>
+        <ul class="items" id="itemsList">
+          <!-- items injected -->
+        </ul>
+
+        <hr style="margin:12px 0;border:none;border-top:1px solid rgba(255,255,255,0.02)">
+
+        <div class="section-title">
+          <strong>Pre-order / Pesan cepat</strong>
+          <span class="small">Tombol WA akan buat pesan terformat</span>
+        </div>
+        <div class="row" style="margin-bottom:8px">
+          <input id="name" type="text" placeholder="Nama (mis. Bu Siti)">
+          <input id="blok" type="text" placeholder="Blok / Alamat singkat">
+        </div>
+        <textarea id="orderText" rows="3" placeholder="Contoh: 1kg cabe, 1 ikat kangkung"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button id="waOrder">Pesan via WhatsApp</button>
+          <button id="refreshBtn" class="ghost">Refresh</button>
+        </div>
+
+        <p class="hint" style="margin-top:10px">Jika penjual sudah menyiapkan mode 'Pre-Order', pesan Anda akan masuk ke WA penjual agar mereka bisa menyiapkan barang sebelum lewat.</p>
+      </div>
+
+      <!-- Right: Seller panel -->
+      <div class="card">
+        <div class="section-title">
+          <strong>Panel Penjual</strong>
+          <span class="small">Proteksi sederhana: PIN</span>
+        </div>
+        <div class="seller-panel">
+          <input id="pin" type="text" placeholder="Masukkan PIN penjual (default: 1234)">
+          <div class="row">
+            <button id="loginBtn">Login</button>
+            <button id="logoutBtn" class="ghost" style="display:none">Logout</button>
+          </div>
+
+          <div id="sellerControls" style="display:none">
+            <label class="small">Status lokasi (contoh: Menuju Blok A)</label>
+            <input id="statusInput" type="text" placeholder="Tulis status singkat">
+
+            <div class="row">
+              <button id="btnNear" class="ghost">Tandai: Sedang Dekat</button>
+              <button id="btnAway" class="ghost">Tandai: Tidak Dekat</button>
+            </div>
+
+            <hr style="border:none;border-top:1px solid rgba(255,255,255,0.02)">
+
+            <strong class="small">Kelola Stok</strong>
+            <div id="manageItems">
+              <!-- item editor -->
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <input id="newItemName" type="text" placeholder="Nama sayur (mis. Kangkung)">
+              <input id="newItemQty" type="number" placeholder="Qty" min="0">
+              <button id="addItemBtn">Tambah</button>
+            </div>
+
+            <hr style="border:none;border-top:1px solid rgba(255,255,255,0.02)">
+
+            <label class="small">Nomor WhatsApp (untuk menerima pre-order)</label>
+            <input id="sellerWA" type="text" placeholder="62812xxxx (pakai kode negara tanpa +)">
+            <div style="display:flex;gap:8px">
+              <button id="saveBtn">Simpan ke Firebase</button>
+              <button id="copyShare" class="ghost">Salin link share (QR)</button>
+            </div>
+
+            <p class="pin">Catatan: untuk demo ini diperlukan Firebase Realtime Database. Lihat komentar di kode (atas) untuk petunjuk pengaturan.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="small card" style="margin-top:12px">
+      <strong>Petunjuk singkat:</strong>
+      <ul>
+        <li>1) Buat Firebase Realtime Database (mode test untuk percobaan) lalu gantikan <code>firebaseConfig</code> di kode.</li>
+        <li>2) Set rules DB minimal: allow read/write untuk project testing, lalu batasi setelah siap.</li>
+        <li>3) Penjual login dengan PIN, update status &amp; stok. Pelanggan melihat update real-time.</li>
+      </ul>
+    </footer>
+	<footer style="text-align:center; padding:12px; font-size:13px; color:#ffffff;">
+  &copy; 2025 YUNUS PABETTENG. All rights reserved.
+</footer>
+
+  </div>
+
+  <!-- ========== SCRIPTS ========== -->
+  <!-- NOTE: Untuk demo real-time gunakan Firebase Realtime Database. Tambahkan SDK berikut setelah membuat project dan mengganti config. -->
+  <script>
+  // =========== CONFIGURATION ===========
+  // 1) Buat Firebase project -> Realtime Database
+  // 2) Ganti nilai firebaseConfig di bawah ini dengan config milikmu
+  // 3) Atur database path: /market/status dan /market/items dan /market/meta
+
+  const USE_FIREBASE = false; // ubah ke true setelah mengisi firebaseConfig
+  const firebaseConfig = {
+    apiKey: "REPLACE_ME",
+    authDomain: "REPLACE_ME",
+    databaseURL: "REPLACE_ME",
+    projectId: "REPLACE_ME",
+    storageBucket: "REPLACE_ME",
+    messagingSenderId: "REPLACE_ME",
+    appId: "REPLACE_ME"
+  };
+
+  // Default demo data (localStorage fallback)
+  const DEFAULT_DATA = {
+    meta: {statusText: 'Belum ada update', near:false, last: Date.now(), sellerWA: ''},
+    items: {
+      'Kangkung': {qty: 10, available:true},
+      'Tomat': {qty: 5, available:true},
+      'Cabe Merah': {qty: 2, available:true},
+      'Bawang Merah': {qty: 0, available:false}
+    }
+  };
+
+  // ====== Helper: format time ======
+  function fmtTime(ts){const d=new Date(ts);return d.toLocaleString('id-ID');}
+
+  // ====== DOM refs ======
+  const itemsList = document.getElementById('itemsList');
+  const lastUpdate = document.getElementById('lastUpdate');
+  const statusText = document.getElementById('statusText');
+  const nearPill = document.getElementById('nearPill');
+
+  const pinInput = document.getElementById('pin');
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const sellerControls = document.getElementById('sellerControls');
+  const statusInput = document.getElementById('statusInput');
+  const btnNear = document.getElementById('btnNear');
+  const btnAway = document.getElementById('btnAway');
+
+  const manageItems = document.getElementById('manageItems');
+  const newItemName = document.getElementById('newItemName');
+  const newItemQty = document.getElementById('newItemQty');
+  const addItemBtn = document.getElementById('addItemBtn');
+
+  const sellerWA = document.getElementById('sellerWA');
+  const saveBtn = document.getElementById('saveBtn');
+  const copyShare = document.getElementById('copyShare');
+
+  const nameInput = document.getElementById('name');
+  const blokInput = document.getElementById('blok');
+  const orderText = document.getElementById('orderText');
+  const waOrder = document.getElementById('waOrder');
+  const refreshBtn = document.getElementById('refreshBtn');
+
+  // ===== Storage keys =====
+  const LS_KEY = 'sayur_motoran_data_v1';
+
+  // ===== App state =====
+  let state = null;
+  let isSeller = false;
+  const SELLER_PIN = '1234'; // ganti sesuai kebutuhan. Di real app, ganti mekanisme auth.
+
+  // ===== Simple local DB operations (fallback) =====
+  function saveLocal(data){localStorage.setItem(LS_KEY, JSON.stringify(data));}
+  function loadLocal(){const j=localStorage.getItem(LS_KEY); if(j) return JSON.parse(j); saveLocal(DEFAULT_DATA); return JSON.parse(localStorage.getItem(LS_KEY));}
+
+  // ========== UI render ==========
+  function render(){
+    if(!state) state = loadLocal();
+    // render status
+    lastUpdate.textContent = fmtTime(state.meta.last);
+    statusText.textContent = state.meta.statusText || 'Penjual belum update';
+    nearPill.style.display = state.meta.near? 'inline-block':'none';
+
+    // items
+    itemsList.innerHTML='';
+    Object.keys(state.items).forEach(name=>{
+      const it = state.items[name];
+      const li = document.createElement('li'); li.className='item';
+      li.innerHTML = `<div class="meta"><div><strong>${name}</strong><div class='small'>${it.available? 'Tersedia':'Habis'}</div></div></div>
+                      <div class='qty'>${it.qty}</div>`;
+      itemsList.appendChild(li);
+    });
+
+    // manage items (seller)
+    manageItems.innerHTML='';
+    if(isSeller){
+      Object.keys(state.items).forEach(name=>{
+        const it = state.items[name];
+        const row = document.createElement('div'); row.style.display='flex'; row.style.gap='8px'; row.style.marginTop='6px';
+        const tn = document.createElement('input'); tn.value = name; tn.disabled=true; tn.style.flex='1';
+        const tq = document.createElement('input'); tq.type='number'; tq.value = it.qty; tq.min=0; tq.style.width='80px';
+        const tav = document.createElement('select'); tav.innerHTML = '<option value="true">Tersedia</option><option value="false">Habis</option>'; tav.value = it.available? 'true':'false';
+        const del = document.createElement('button'); del.textContent='Hapus'; del.className='ghost'; del.style.width='80px';
+        row.appendChild(tn); row.appendChild(tq); row.appendChild(tav); row.appendChild(del);
+        manageItems.appendChild(row);
+
+        tq.addEventListener('change', ()=>{ it.qty = parseInt(tq.value||0); saveLocal(state); render(); });
+        tav.addEventListener('change', ()=>{ it.available = (tav.value==='true'); saveLocal(state); render(); });
+        del.addEventListener('click', ()=>{ delete state.items[name]; saveLocal(state); render(); });
+      });
+    }
+
+    // seller WA
+    sellerWA.value = state.meta.sellerWA || '';
+  }
+
+  // ========== Actions ==========
+  loginBtn.addEventListener('click', ()=>{
+    if(pinInput.value === SELLER_PIN){ isSeller=true; sellerControls.style.display='block'; loginBtn.style.display='none'; logoutBtn.style.display='inline-block'; render(); alert('Login seller berhasil'); }
+    else alert('PIN salah');
+  });
+  logoutBtn.addEventListener('click', ()=>{ isSeller=false; sellerControls.style.display='none'; loginBtn.style.display='inline-block'; logoutBtn.style.display='none'; });
+
+  btnNear.addEventListener('click', ()=>{ state.meta.near = true; state.meta.last = Date.now(); saveLocal(state); render(); pushToFirebase(); });
+  btnAway.addEventListener('click', ()=>{ state.meta.near = false; state.meta.last = Date.now(); saveLocal(state); render(); pushToFirebase(); });
+
+  document.getElementById('statusInput').addEventListener('change', ()=>{ state.meta.statusText = statusInput.value || 'Sedang lewat'; state.meta.last = Date.now(); saveLocal(state); render(); pushToFirebase(); });
+
+  addItemBtn.addEventListener('click', ()=>{
+    const name = (newItemName.value || '').trim(); const qty = parseInt(newItemQty.value||0);
+    if(!name) return alert('Isi nama sayur');
+    state.items[name] = {qty:qty, available: qty>0}; saveLocal(state); newItemName.value=''; newItemQty.value=''; render(); pushToFirebase();
+  });
+
+  saveBtn.addEventListener('click', ()=>{ state.meta.sellerWA = sellerWA.value.trim(); saveLocal(state); pushToFirebase(); alert('Disimpan (lokal dan Firebase jika aktif)'); });
+
+  copyShare.addEventListener('click', async ()=>{
+    const url = location.href; await navigator.clipboard.writeText(url); alert('Link share tersalin. Bagikan ke tetangga.'); });
+
+  waOrder.addEventListener('click', ()=>{
+    const seller = state.meta.sellerWA || '';
+    if(!seller) return alert('Nomor penjual belum diset. Minta penjual untuk mengisi panel mereka.');
+    const name = (nameInput.value || '').trim(); const blok = (blokInput.value || '').trim(); const order = (orderText.value || '').trim();
+    if(!order) return alert('Isi pesanan dulu');
+    const msg = `Order%20dari%20${encodeURIComponent(name || '-') }%20(${encodeURIComponent(blok||'-')})%0A%0A${encodeURIComponent(order)}%0A%0A(Ini%20pre-order%20via%20website)`;
+    const wa = `https://wa.me/${seller}?text=${msg}`;
+    window.open(wa,'_blank');
+  });
+
+  refreshBtn.addEventListener('click', ()=>{ loadFromFirebase(); render(); alert('Refresh done'); });
+
+  // ========== Firebase glue (optional) ==========
+  let firebaseApp = null; let db = null;
+  function initFirebase(){
+    if(!USE_FIREBASE) return;
+    // load SDK dynamically
+    const s = document.createElement('script'); s.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js'; s.onload = ()=>{
+      const dbs = document.createElement('script'); dbs.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js'; dbs.onload = ()=>{
+        try{
+          firebaseApp = firebase.initializeApp(firebaseConfig);
+          db = firebase.database();
+          console.log('Firebase initialized');
+          // listen for remote changes
+          db.ref('/market').on('value', snap=>{
+            const v = snap.val(); if(v){ state = v; saveLocal(state); render(); }
+          });
+        }catch(e){console.error('Firebase init error',e);}
+      }; document.head.appendChild(dbs);
+    }; document.head.appendChild(s);
+  }
+
+  function pushToFirebase(){ if(!USE_FIREBASE || !db) return; db.ref('/market').set(state).catch(e=>console.error(e)); }
+  function loadFromFirebase(){ if(!USE_FIREBASE || !db) return; db.ref('/market').once('value').then(snap=>{ const v=snap.val(); if(v){ state=v; saveLocal(state); render(); } else alert('Belum ada data di Firebase'); }).catch(e=>console.error(e)); }
+
+  // ========== Init ========
+  (function(){ state = loadLocal(); render(); if(USE_FIREBASE) initFirebase(); })();
+
+  </script>
+</body>
+</html>

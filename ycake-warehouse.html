@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YCAKE WAREHOUSE</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+:root {
+  --bg:#1a0d1d;
+  --card:#2a0f2a;
+  --accent:#ff4db8;
+  --accent-glow:#ff66cc;
+  --muted:#ccc;
+  --radius:12px;
+}
+
+* { box-sizing:border-box; margin:0; padding:0; font-family:'Poppins',sans-serif; }
+body {
+  background: radial-gradient(circle at top,#1a0d1d,#0d000f);
+  color:white;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:20px;
+}
+
+/* Layout utama: kiri-kanan */
+.wrap {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  max-width:900px;
+  width:100%;
+}
+
+/* Card umum */
+.card {
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:20px;
+  box-shadow:0 0 8px rgba(255,77,184,0.3);
+  transition:0.3s;
+}
+.card:hover {
+  box-shadow:0 0 18px var(--accent),0 0 30px var(--accent-glow);
+  transform:translateY(-2px);
+}
+
+/* Form input */
+label {display:block; margin:8px 0 4px; color:var(--muted);}
+input, select, textarea {
+  width:100%; padding:10px; border-radius:8px;
+  border:1px solid rgba(255,77,184,0.3); background:rgba(50,0,50,0.7);
+  color:white; margin-bottom:12px; outline:none; box-shadow:0 0 4px rgba(255,77,184,0.2) inset;
+  transition:0.2s;
+}
+input:hover, select:hover, textarea:hover {border-color:var(--accent); box-shadow:0 0 8px var(--accent-glow) inset;}
+
+/* Ringkasan pesanan */
+.summary {
+  background:rgba(255,77,184,0.05);
+  padding:15px;
+  border-radius:10px;
+  font-size:14px;
+  line-height:1.5;
+  color:white;
+  margin-bottom:15px;
+  white-space: pre-line;
+}
+
+/* Tombol */
+.btn {
+  width:100%;
+  padding:14px;
+  border-radius:10px;
+  border:none;
+  background:linear-gradient(90deg,var(--accent),var(--accent-glow));
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 0 8px rgba(255,77,184,0.5); 
+  text-shadow:0 0 4px var(--accent-glow);
+  transition:0.3s;
+}
+.btn:hover { 
+  transform:scale(1.05); 
+  box-shadow:0 0 18px var(--accent),0 0 30px var(--accent-glow); 
+}
+
+/* Flex kanan: ringkasan + tombol + keterangan */
+.right {
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+/* Judul */
+h1 {
+  color:var(--accent);
+  text-shadow:0 0 6px var(--accent),0 0 15px var(--accent-glow);
+  margin-bottom:15px;
+  text-align:center;
+}
+
+/* Keterangan */
+.instructions {
+  font-size:14px;
+  margin-top:10px;
+  color:var(--muted);
+  line-height:1.4;
+  background:rgba(255,77,184,0.05);
+  padding:10px;
+  border-radius:10px;
+}
+
+/* Responsive */
+@media(max-width:700px){
+  .wrap { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- Kolom kiri: Form + Judul -->
+  <div>
+    <div class="card">
+	<h1>YCAKE WAREHOUSE</h1>
+      <label>Jenis Kue</label>
+      <select id="cakeType">
+        <option value="Brownies">Brownies</option>
+        <option value="Red Velvet">Red Velvet</option>
+        <option value="Cheesecake">Cheesecake</option>
+      </select>
+
+      <label>Rasa</label>
+      <select id="flavor">
+        <option value="Coklat" data-price="0">Coklat</option>
+        <option value="Keju" data-price="5000">Keju (+5k)</option>
+        <option value="Strawberry" data-price="7000">Strawberry (+7k)</option>
+      </select>
+
+      <label>Bentuk</label>
+      <select id="shape">
+        <option value="Bulat" data-price="0">Bulat</option>
+        <option value="Kotak" data-price="5000">Kotak (+5k)</option>
+        <option value="Hati" data-price="8000">Hati (+8k)</option>
+      </select>
+
+      <label>Ukuran (cm)</label>
+      <input type="number" id="size" value="20" min="5">
+
+      <label>Nama di Kue</label>
+      <input type="text" id="name" placeholder="Masukkan nama">
+
+      <label>Umur / Tahun</label>
+      <input type="number" id="age" placeholder="Umur">
+
+      <label>Pesan / Kata-kata</label>
+      <textarea id="message" placeholder="Masukkan kata-kata"></textarea>
+    </div>
+  </div>
+
+  <!-- Kolom kanan: Ringkasan + Tombol + Keterangan -->
+  <div class="right">
+    <div class="card summary" id="summary">
+      <strong>Ringkasan Pesanan:</strong>
+      <p id="summaryText">Belum ada pesanan</p>
+      <p id="summaryPrice">Harga: Rp50.000</p>
+    </div>
+    <div class="card">
+      <button class="btn" id="downloadBtn">Download Ringkasan</button>
+    </div>
+    <div class="card">
+      <button class="btn" id="waBtn">Pesan via WhatsApp</button>
+    </div>
+    <!-- Keterangan di bawah tombol WA -->
+    <div class="instructions">
+      <strong>Cara menggunakan website:</strong>
+      <ul>
+        <li>Pilih jenis kue, rasa, bentuk, ukuran.</li>
+        <li>Isi nama, umur, dan pesan yang ingin ditulis di kue.</li>
+        <li>Ringkasan pesanan akan muncul otomatis di kanan.</li>
+        <li>Klik "Download Ringkasan" untuk menyimpan gambar pesanan.</li>
+        <li>Klik "Pesan via WhatsApp" untuk mengirim pesanan.</li>
+      </ul>
+    </div>
+	<footer style="text-align:center; padding:12px; font-size:13px; color:#ffffff;">
+  &copy; 2025 YUNUS PABETTENG. All rights reserved.
+</footer>
+
+  </div>
+  
+</div>
+
+<script>
+const basePrice = 50000;
+
+// Update ringkasan
+function updateSummary(){
+  const cakeType = document.getElementById('cakeType').value;
+  const flavor = document.getElementById('flavor');
+  const shape = document.getElementById('shape');
+  const size = document.getElementById('size').value;
+  const name = document.getElementById('name').value;
+  const age = document.getElementById('age').value;
+  const message = document.getElementById('message').value;
+
+  const extra = parseInt(flavor.selectedOptions[0].dataset.price || 0) + parseInt(shape.selectedOptions[0].dataset.price || 0);
+  const total = basePrice + extra;
+
+  document.getElementById('summaryText').innerText = `Jenis: ${cakeType}\nRasa: ${flavor.value}\nBentuk: ${shape.value}\nUkuran: ${size} cm\nNama: ${name}\nUmur: ${age}\nPesan: ${message}`;
+  document.getElementById('summaryPrice').innerText = `Harga: Rp${total.toLocaleString()}`;
+}
+
+// Event input untuk update otomatis
+document.querySelectorAll('#cakeType, #flavor, #shape, #size, #name, #age, #message').forEach(el=>{
+  el.addEventListener('input', updateSummary);
+  el.addEventListener('change', updateSummary);
+});
+
+// Download ringkasan sebagai gambar
+document.getElementById('downloadBtn').addEventListener('click', async ()=>{
+  const summary = document.getElementById('summary');
+  const canvas = await html2canvas(summary, {backgroundColor:null});
+  const link = document.createElement('a');
+  link.download = 'ringkasan_pesanan.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+});
+
+// Kirim ke WhatsApp (teks saja)
+document.getElementById('waBtn').addEventListener('click', ()=>{
+  const summaryText = document.getElementById('summaryText').innerText;
+  const summaryPrice = document.getElementById('summaryPrice').innerText;
+  const phone = '6281234567890';
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent('Halo, saya ingin memesan kue:\n' + summaryText + '\n' + summaryPrice)}`;
+  window.open(url,'_blank');
+});
+</script>
+
+</body>
+</html>
