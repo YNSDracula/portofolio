@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>YFOOTBALL PREDICTIONS</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#05070f;
+  --card:#0b0e1a;
+  --muted:#b7c2ff;
+  --accent:#2d4cff;
+  --accent-2:#2038c9;
+  --panel:#0a0d17;
+  --glass: rgba(46,66,255,0.1);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Poppins",sans-serif;
+  background: radial-gradient(circle at top,var(--bg),#02030a 80%);
+  color:#e9eaff;
+  display:flex;
+  justify-content:center;
+  padding:48px 20px;
+}
+
+.wrap{
+  width:1080px;
+  max-width:100%;
+  display:grid;
+  grid-template-columns: 420px 1fr;
+  gap:20px;
+}
+
+/* CARD */
+.card{
+  background:linear-gradient(180deg,var(--card),#060814);
+  border-radius:16px;
+  padding:22px;
+  box-shadow: 0 0 20px rgba(45,76,255,0.25), 0 12px 40px rgba(0,20,60,0.55);
+  border:1px solid rgba(46,66,255,0.2);
+  transition:0.25s ease;
+}
+
+.card:hover{
+  box-shadow:0 0 35px rgba(45,76,255,0.45), 0 12px 45px rgba(0,20,60,0.6);
+  transform:translateY(-3px);
+}
+
+h1, h3{
+  margin:0 0 10px;
+}
+
+h1{
+  font-size:18px;
+  text-shadow:0 0 6px rgba(45,76,255,0.6);
+}
+
+h3{
+  font-size:16px;
+  color:#9bb3ff;
+}
+
+label{
+  font-size:13px;
+  color:var(--muted);
+  display:block;
+  margin-top:12px;
+  text-shadow:0 0 3px rgba(255,255,255,0.1);
+}
+
+input[type=number], input[type=text]{
+  width:100%;
+  padding:10px 12px;
+  margin-top:8px;
+  border-radius:10px;
+  border:1px solid rgba(46,66,255,0.15);
+  background:#0c0f1a;
+  color:#eaeaff;
+  font-size:14px;
+  outline:none;
+  box-shadow:0 0 6px rgba(45,76,255,0.15) inset;
+  transition:0.2s;
+}
+
+input:focus{
+  border-color:var(--accent-2);
+  box-shadow:0 0 12px rgba(45,76,255,0.35), 0 0 6px rgba(45,76,255,0.2) inset;
+}
+
+.row{display:flex;gap:10px}
+.small{flex:1}
+
+/* BUTTON */
+button{
+  margin-top:14px;
+  width:100%;
+  padding:12px;
+  border-radius:14px;
+  border:none;
+  background:linear-gradient(180deg,var(--accent),var(--accent-2));
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 0 12px rgba(45,76,255,0.35), 0 8px 25px rgba(45,76,255,0.25);
+  transition:0.2s;
+}
+
+button:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px rgba(45,76,255,0.5), 0 10px 30px rgba(45,76,255,0.35);
+}
+
+/* RESULT PANEL */
+.result{
+  margin-top:12px;
+  background:var(--panel);
+  padding:14px;
+  border-radius:12px;
+  border:1px solid rgba(46,66,255,0.15);
+  font-size:14px;
+  box-shadow:0 0 12px rgba(45,76,255,0.15) inset;
+}
+
+.panel{display:flex;flex-direction:column;gap:12px;}
+.panel .card { padding:16px; overflow:auto; max-height:72vh;}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+th,td{
+  padding:8px 6px;
+  text-align:left;
+  border-bottom:1px dashed rgba(255,255,255,0.06);
+}
+th{color:var(--muted);font-weight:600}
+
+/* TAGS */
+.tag{
+  display:inline-block;
+  padding:6px 8px;
+  border-radius:8px;
+  background:var(--glass);
+  color:var(--muted);
+  font-size:12px;
+  margin-right:6px;
+  box-shadow:0 0 6px rgba(45,76,255,0.15);
+}
+
+.score-bubble{
+  display:inline-block;
+  padding:6px 8px;
+  border-radius:8px;
+  background:rgba(255,255,255,0.05);
+  min-width:48px;
+  text-align:center;
+  margin-bottom:4px;
+  box-shadow:0 0 6px rgba(45,76,255,0.15);
+}
+
+.mini{font-size:12px;color:var(--muted)}
+.top-score{
+  font-size:22px;
+  font-weight:800;
+  text-shadow:0 0 6px rgba(45,76,255,0.5);
+}
+
+#historyTable td, #historyTable th { font-size:12px; }
+
+@media(max-width:960px){
+  .wrap{grid-template-columns:1fr;}
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LEFT INPUT CARD -->
+  <div class="card">
+    <h1>YFOOTBALL PREDICTIONS</h1>
+
+    <label>Team A</label>
+    <input id="nameA" type="text" placeholder="Team A">
+
+    <div class="row">
+      <div class="small">
+        <label>MP A</label>
+        <input id="mpA" type="number" min="1">
+      </div>
+      <div class="small">
+        <label>GF A</label>
+        <input id="gfA" type="number" min="0">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="small">
+        <label>GA A</label>
+        <input id="gaA" type="number" min="0">
+      </div>
+      <div class="small">
+        <label>PTS A</label>
+        <input id="ptsA" type="number" min="0">
+      </div>
+    </div>
+
+    <hr style="opacity:0.1;margin:16px 0">
+
+    <label>Team B</label>
+    <input id="nameB" type="text" placeholder="Team B">
+
+    <div class="row">
+      <div class="small">
+        <label>MP B</label>
+        <input id="mpB" type="number" min="1">
+      </div>
+      <div class="small">
+        <label>GF B</label>
+        <input id="gfB" type="number" min="0">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="small">
+        <label>GA B</label>
+        <input id="gaB" type="number" min="0">
+      </div>
+      <div class="small">
+        <label>PTS B</label>
+        <input id="ptsB" type="number" min="0">
+      </div>
+    </div>
+
+    <button onclick="predictPoisson()">PREDIKSI</button>
+    <div id="resultBox" class="result" style="display:none"></div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="panel">
+    <!-- RESULT CARD -->
+    <div class="card">
+      <div class="muted">Skor paling mungkin</div>
+      <div id="mostLikely" class="top-score">—</div>
+
+      <hr style="opacity:0.1;margin:10px 0">
+      <div class="muted">Alternatif skor</div>
+      <div id="altScores" style="margin-top:6px"></div>
+
+      <hr style="opacity:0.1;margin:10px 0">
+      <table>
+        <tr><th>Metric</th><th>Value</th></tr>
+        <tr><td>Expected goals A</td><td id="lamA">-</td></tr>
+        <tr><td>Expected goals B</td><td id="lamB">-</td></tr>
+        <tr><td>BTTS</td><td id="btts">-</td></tr>
+        <tr><td>Over 2.5</td><td id="over25">-</td></tr>
+      </table>
+    </div>
+
+    <!-- HISTORY TABLE -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3 style="margin:0;color:#9bb3ff">History Prediksi</h3>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button onclick="downloadHistoryCSV()" style="
+            padding:6px 10px; font-size:11px; border:none; border-radius:8px; background:#2196f3; color:white; cursor:pointer;">Download CSV</button>
+
+          <button onclick="printHistory()" style="
+            padding:6px 10px; font-size:11px; border:none; border-radius:8px; background:#4caf50; color:white; cursor:pointer;">Print</button>
+
+          <button id="clearBtn" style="
+            padding:6px 10px; font-size:11px; border:none; border-radius:8px; background:#ff1744; color:white; cursor:pointer;">Hapus Semua</button>
+        </div>
+      </div>
+
+      <table id="historyTable">
+        <thead>
+          <tr>
+            <th>Pertandingan</th>
+            <th>Exp.Gol</th>
+            <th>Prediksi Skor</th>
+            <th>Pemenang</th>
+            <th>Saran O/U</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <footer style="text-align:center; padding:12px; font-size:13px; color:#ffffff;">
+  &copy; 2025 YUNUS PABETTENG. All rights reserved.
+</footer>
+
+</div>
+
+<script>
+// ================= Poisson =================
+function poissonP(lambda, k) {
+  if (lambda <= 0) return (k === 0) ? 1 : 0;
+  let res = Math.exp(-lambda);
+  let term = 1;
+  for (let i = 1; i <= k; i++) term *= lambda / i;
+  return res * term;
+}
+
+function predictPoisson() {
+  const nameA = (document.getElementById('nameA').value || 'Team A').trim();
+  const nameB = (document.getElementById('nameB').value || 'Team B').trim();
+  const mpA = Number(document.getElementById('mpA').value);
+  const gfA = Number(document.getElementById('gfA').value);
+  const gaA = Number(document.getElementById('gaA').value);
+  const ptsA = Number(document.getElementById('ptsA').value) || 0;
+  const mpB = Number(document.getElementById('mpB').value);
+  const gfB = Number(document.getElementById('gfB').value);
+  const gaB = Number(document.getElementById('gaB').value);
+  const ptsB = Number(document.getElementById('ptsB').value) || 0;
+
+  if(!mpA||!mpB||mpA<=0||mpB<=0){ alert('Masukkan MP yang valid'); return;}
+  if([gfA,gaA,gfB,gaB].some(v=>isNaN(v)||v<0)){ alert('Masukkan nilai gol/ga valid'); return; }
+
+  let gpmA=gfA/mpA, gpmB=gfB/mpB;
+  let capmA=gaA/mpA, capmB=gaB/mpB;
+  let ptsFactor=(ptsA+1)/(ptsB+1);
+  let lamA=((gpmA+capmB)/2)*Math.sqrt(ptsFactor);
+  let lamB=((gpmB+capmA)/2)/Math.sqrt(ptsFactor);
+  lamA=Math.max(lamA,0.1); lamB=Math.max(lamB,0.1);
+
+  const MAX_GOALS=6;
+  let probsA=[], probsB=[];
+  for(let k=0;k<=MAX_GOALS;k++){ probsA.push(poissonP(lamA,k)); probsB.push(poissonP(lamB,k)); }
+
+  let winAprob=0, drawProb=0, winBprob=0, over25prob=0, bttsProb=0, scoreList=[];
+  for(let i=0;i<=MAX_GOALS;i++){
+    for(let j=0;j<=MAX_GOALS;j++){
+      const p=probsA[i]*probsB[j]; scoreList.push({i,j,p});
+      if(i>j) winAprob+=p; else if(i===j) drawProb+=p; else winBprob+=p;
+      if(i+j>2.5) over25prob+=p;
+      if(i>0 && j>0) bttsProb+=p;
+    }
+  }
+
+  const under25prob=1-over25prob;
+  const ouSuggestion=(over25prob>0.55)?"Over 2.5":"Under 2.5";
+  scoreList.sort((a,b)=>b.p-a.p);
+  const top=scoreList[0];
+  const alt=scoreList.filter(x=>x.p*100>2).slice(0,6);
+  let altHtml='';
+  alt.forEach(it=>{
+    let style=(it.p*100>20)?'background:rgba(45,76,255,0.3);':'';
+    altHtml+=`<div class="score-bubble" style="${style}">${it.i}-${it.j}<div class="mini" style="margin-top:6px">${(it.p*100).toFixed(2)}%</div></div>`;
+  });
+
+  const expTotal=lamA+lamB;
+  const resultBox=document.getElementById('resultBox');
+  resultBox.style.display='block';
+  resultBox.innerHTML=`
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center">
+      <div><div class="muted">Pertandingan</div><div style="font-weight:700;font-size:16px">${nameA} vs ${nameB}</div></div>
+      <div style="text-align:right"><div class="muted">Expetasi Gol (Total)</div><div class="top-score" style="font-size:18px">${expTotal.toFixed(2)}</div></div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:12px;align-items:center">
+      <div style="flex:1">
+        <div class="muted">Prediksi skor yang paling mungkin</div>
+        <div style="font-size:20px;font-weight:800;margin-top:6px">${top.i} - ${top.j}</div>
+        <div class="mini" style="margin-top:6px">Probabilitas ${(top.p*100).toFixed(2)}%</div>
+      </div>
+      <div style="flex:1">
+        <div class="muted">Alternatif Gol</div>
+        <div style="margin-top:6px">${altHtml}</div>
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <div class="line"><strong>Menang ${nameA}:</strong> ${(winAprob*100).toFixed(2)}%</div>
+      <div class="line"><strong>Seri:</strong> ${(drawProb*100).toFixed(2)}%</div>
+      <div class="line"><strong>Menang ${nameB}:</strong> ${(winBprob*100).toFixed(2)}%</div>
+      <div style="margin-top:8px" class="mini muted">BTTS = both teams to score</div>
+      <div class="line"><strong>BTTS %:</strong> ${(bttsProb*100).toFixed(2)}%</div>
+      <div class="line"><strong>Over 2.5 %:</strong> ${(over25prob*100).toFixed(2)}%</div>
+      <div class="line"><strong>Under 2.5 %:</strong> ${(under25prob*100).toFixed(2)}%</div>
+      <div class="line"><strong>Saran OU:</strong> ${ouSuggestion}</div>
+    </div>
+  `;
+
+  document.getElementById('mostLikely').innerText=`${top.i} - ${top.j} (${(top.p*100).toFixed(2)}%)`;
+  document.getElementById('altScores').innerHTML=altHtml;
+  document.getElementById('lamA').innerText=lamA.toFixed(2);
+  document.getElementById('lamB').innerText=lamB.toFixed(2);
+  document.getElementById('btts').innerText=(bttsProb*100).toFixed(2)+'%';
+  document.getElementById('over25').innerText=(over25prob*100).toFixed(2)+'%';
+
+  const diff=Math.abs(winAprob-winBprob);
+  const winnerPredict=diff<0.05?'Draw':(winAprob>winBprob?nameA:nameB);
+
+  addHistory({
+    match:`${nameA} vs ${nameB}`,
+    expGoals:expTotal.toFixed(2),
+    score:`${top.i}-${top.j}`,
+    winner:winnerPredict,
+    ou:ouSuggestion
+  });
+}
+
+// ================= HISTORY =================
+function addHistory(data){
+  const tbody=document.querySelector('#historyTable tbody');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`
+    <td>${data.match}</td>
+    <td>${data.expGoals}</td>
+    <td>${data.score}</td>
+    <td>${data.winner}</td>
+    <td>${data.ou}</td>
+    <td><button onclick="this.parentElement.parentElement.remove()" style="padding:3px 6px;font-size:11px;background:#ff3f5c;border:none;border-radius:6px;color:white;cursor:pointer;">Hapus</button></td>
+  `;
+  tbody.prepend(tr);
+}
+
+// ================= CSV & PRINT =================
+function downloadHistoryCSV(){
+  const table = document.getElementById("historyTable");
+  const rows = table.querySelectorAll("tr");
+  let csvContent = "";
+  rows.forEach(row=>{
+    const cols = row.querySelectorAll("th, td");
+    let rowData = [];
+    cols.forEach(col=>{
+      let cellText = col.innerText.replace(/"/g, '""');
+      rowData.push(`"${cellText}"`);
+    });
+    csvContent += rowData.join(",") + "\n";
+  });
+  const blob = new Blob([csvContent], {type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "history_prediksi.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function printHistory(){
+  const printWindow = window.open('', '', 'height=600,width=800');
+  printWindow.document.write('<html><head><title>History Prediksi</title></head><body>');
+  printWindow.document.write(document.getElementById('historyTable').outerHTML);
+  printWindow.document.write('</body></html>');
+  printWindow.document.close();
+  printWindow.print();
+}
+
+// ================= CLEAR =================
+document.getElementById("clearBtn").onclick=()=>document.querySelector("#historyTable tbody").innerHTML="";
+</script>
+</body>
+</html>
