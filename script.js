@@ -99,3 +99,21 @@ document.querySelectorAll('nav a[href^="#"]').forEach(a=>{
     if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
   });
 });
+
+
+const btn = document.getElementById('experienceToggle');
+const panel = document.getElementById('experiencePanel');
+
+btn.addEventListener('click', () => {
+  panel.classList.toggle('active');
+});
+
+
+function toggleSertifikat() {
+  const panel = document.getElementById('sertifikatPanel');
+  if (panel.style.maxHeight && panel.style.maxHeight !== "0px") {
+    panel.style.maxHeight = "0px"; // sembunyikan panel
+  } else {
+    panel.style.maxHeight = panel.scrollHeight + "px"; // tampilkan panel
+  }
+}

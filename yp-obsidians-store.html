@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>YP Obsidian Store</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+body, html {
+  margin: 0; padding: 0; scroll-behavior: smooth;
+  background: #1e1e29;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 60px;
+  position: relative;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: #1e1e29;
+  z-index: 10;
+  padding-bottom: 10px;
+}
+.logo {
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: 1.2px;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+}
+nav ul li {
+  cursor: pointer;
+  font-weight: 300;
+}
+nav ul li:hover, nav ul li.active {
+  border-bottom: 2px solid #ff7f32;
+  padding-bottom: 5px;
+}
+
+/* Main content */
+section { padding: 80px 0; }
+.main-product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.info { max-width: 40%; }
+.info h1 { font-weight: 600; font-size: 36px; margin: 0 0 12px; }
+.info h2 { font-weight: 300; font-size: 18px; margin: 0 0 30px; color: #bbb; }
+.price { font-weight: 600; font-size: 26px; color: #ff7f32; margin-bottom: 40px; }
+.btns { display: flex; gap: 20px; }
+.btn-detail, .btn-cart {
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-detail {
+  border: 1.8px solid #bbb;
+  background: transparent;
+  color: #bbb;
+}
+.btn-detail:hover { background: #ff7f32; color: white; border-color: #ff7f32; }
+.btn-cart { border: none; background: #ff7f32; color: white; padding: 12px 32px; }
+.btn-cart:hover { background: #e36a23; }
+
+.product-img { max-width: 45%; position: relative; }
+.product-img img { width: 100%; object-fit: contain; filter: drop-shadow(0 15px 20px rgba(255,127,50,0.6)); }
+
+.product-slider-nav {
+  position: absolute; 
+  right: -30px; 
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 5;
+}
+.product-slider-nav button {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: none;
+  background-color: #555;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.product-slider-nav button.active,
+.product-slider-nav button:hover {
+  background-color: #ff7f32;
+  box-shadow: 0 0 6px #ff7f32;
+}
+
+/* Social icons */
+.social-icons { display: flex; gap: 16px; margin-top: 40px; }
+.social-icons svg { width: 22px; height: 22px; fill: #555; cursor: pointer; transition: fill 0.3s ease; }
+.social-icons svg:hover { fill: #ff7f32; }
+
+/* Product grid section */
+#products .product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  gap: 40px;
+}
+/* Efek dasar produk tanpa glow */
+.product-card {
+  background: #2a2a3a;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  transition: box-shadow 0.4s ease, transform 0.4s ease; /* smooth efek */
+  box-shadow: 0 0 0 rgba(255,255,255,0); /* glow awal = tidak terlihat */
+}
+
+/* Efek saat mouse hover */
+.product-card:hover {
+  box-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4);
+  transform: translateY(-5px); /* sedikit naik halus */
+}
+
+/* Untuk gambar produk juga */
+.product-img img {
+  width: 100%;
+  object-fit: contain;
+  transition: filter 0.4s ease; /* smooth efek glow gambar */
+  filter: drop-shadow(0 0 0 rgba(255,255,255,0)); /* glow awal = 0 */
+}
+
+.product-img img:hover {
+  filter: drop-shadow(0 15px 20px rgba(255,255,255,0.6)); /* glow putih saat hover */
+}
+
+#products .product-card img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 12px; }
+#products .product-card h3 { margin: 0 0 8px; font-weight: 600; }
+#products .product-card p { margin: 0 0 12px; color: #bbb; }
+#products .product-card button {
+  background: #ff7f32; border: none; color: white;
+  padding: 10px 20px; border-radius: 8px; cursor: pointer;
+}
+#products .product-card button:hover { background: #e36a23; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">YP Obsidian Store.</div>
+    <nav>
+      <ul>
+        <li class="active" data-section="home">Beranda</li>
+        <li data-section="products">Produk</li>
+        <li data-section="about">Tentang</li>
+        <li data-section="contact">Kontak</li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home" class="main-product">
+    <div class="info">
+      <h1 id="productTitle">ChainMind</h1>
+      <h2 id="productSubtitle">Wear your vibe, own the night.</h2>
+      <div class="price" id="productPrice">250</div>
+	  
+      <div class="btns">
+        <button class="btn-detail">Detail</button>
+        <button class="btn-cart" id="btnCart">Pesan Sekarang</button>
+      </div>
+    </div>
+    <div class="product-img">
+      <img id="productImage" src="1.png" alt="ChainMind" />
+      <div class="product-slider-nav" id="sliderNav"></div>
+    </div>
+  </section>
+
+  <!-- Modal Product Details -->
+<div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:20;">
+  <div style="
+    background:#1e1e29; 
+    padding:20px; 
+    border-radius:12px; 
+    max-width:400px; 
+    width:90%; 
+    box-shadow:0 8px 20px rgba(0,0,0,0.5);
+    text-align:center;
+    position:relative;">
+    <span id="modalClose" style="position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color:#ff7f32;">&times;</span>
+    <img id="modalImage" src="kaos.png" alt="" style="width:80%; max-height:200px; object-fit:contain; margin-bottom:15px;">
+    <h2 id="modalTitle" style="font-size:20px; margin-bottom:5px;">ChainMind</h2>
+    <p id="modalSubtitle" style="font-size:14px; color:#bbb; margin-bottom:10px;">Wear your vibe, own the night.</p>
+    <div id="modalPrice" style="font-weight:600; color:#ff7f32; margin-bottom:15px;">250$</div>
+    <p id="modalDesc" style="font-size:14px; color:#ddd;">Deskripsi lengkap produk akan muncul di sini.</p>
+  </div>
+</div>
+
+
+  <!-- Our Products Section -->
+  <section id="products">
+    <h2>Produk</h2>
+    <div class="product-grid" id="productGrid"></div>
+  </section>
+
+  <!-- About Us Section -->
+  <section id="about">
+    <h2>Tentang</h2>
+    <p>Kami YP Obsidian Store menghadirkan berbagai produk elektronik berkualitas tinggi. Fokus kami adalah kualitas, desain, dan kepuasan pelanggan.</p>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2>Kontak</h2>
+    <p>Email: yunus@example.com</p>
+    <p>WhatsApp: +6281234567890</p>
+    <p>Instagram: @ypobsidianstore_official</p>
+  </section>
+
+  <div class="social-icons">
+    <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.5 9.9v-7h-2v-3h2v-2.2a3 3 0 013-3h2v3h-1.5a.5.5 0 00-.5.5V12h2.5l-.5 3h-2v7A10 10 0 0022 12z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M7 2c-2.25 0-4 1.75-4 4v12c0 2.25 1.75 4 4 4h10c2.25 0 4-1.75 4-4V6c0-2.25-1.75-4-4-4H7zm10 3a1 1 0 110 2 1 1 0 010-2zM12 7c2.75 0 5 2.25 5 5s-2.25 5-5 5-5-2.25-5-5 2.25-5 5-5zm0 2a3 3 0 100 6 3 3 0 000-6z"/></svg>
+  </div>
+</div>
+
+<script>
+/// Produk utama dengan deskripsi lengkap (harga sebagai angka)
+const products = [
+  {title:'ChainMind', subtitle:'Wear your vibe, own the night.', price:250, img:'1.png', desc:'Wear your vibe, own the night.'},
+  {title:'Cerberus', subtitle:'Wear your vibe, own the night.', price:180, img:'2.png', desc:'Wear your vibe, own the night.'},
+  {title:'Venom', subtitle:'Wear your vibe, own the night.', price:120, img:'3.png', desc:'Wear your vibe, own the night..'},
+  {title:'Streax', subtitle:'Wear your vibe, own the night.', price:200, img:'4.png', desc:'Wear your vibe, own the night..'},
+  {title:'Strider', subtitle:'Wear your vibe, own the night.', price:90, img:'5.png', desc:'Wear your vibe, own the night..'},
+  {title:'VeinEye', subtitle:'Wear your vibe, own the night.', price:50, img:'6.png', desc:'Wear your vibe, own the night..'},
+  {title:'Roma Skull', subtitle:'Wear your vibe, own the night.', price:300, img:'7.png', desc:'Wear your vibe, own the night..'},
+  {title:'SkateWave', subtitle:'Wear your vibe, own the night.', price:40, img:'8.png', desc:'Wear your vibe, own the night.'},
+];
+
+// Fungsi untuk mengubah angka harga ke format Rupiah
+function formatRupiah(number) {
+  return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number);
+}
+
+// Contoh penggunaan: menampilkan harga produk pertama di elemen
+document.getElementById('productPrice').innerText = formatRupiah(products[0].price);
+
+
+// Slider utama
+const sliderNav = document.getElementById('sliderNav');
+products.forEach((_, i)=>{
+  const btn = document.createElement('button');
+  if(i===0) btn.classList.add('active');
+  btn.addEventListener('click', ()=> selectProduct(i));
+  sliderNav.appendChild(btn);
+});
+
+function selectProduct(index){
+  const p = products[index];
+  document.getElementById('productTitle').innerText = p.title;
+  document.getElementById('productSubtitle').innerText = p.subtitle;
+  // Tambahkan formatRupiah di sini
+  document.getElementById('productPrice').innerText = formatRupiah(p.price);
+  document.getElementById('productImage').src = p.img;
+  document.querySelectorAll('.product-slider-nav button').forEach((b,i)=> b.classList.toggle('active', i===index));
+}
+
+
+// Modal More details
+const btnDetail = document.querySelector(".btn-detail");
+const modal = document.getElementById("modal");
+const modalClose = document.getElementById("modalClose");
+const modalImage = document.getElementById("modalImage");
+const modalTitle = document.getElementById("modalTitle");
+const modalSubtitle = document.getElementById("modalSubtitle");
+const modalPrice = document.getElementById("modalPrice");
+const modalDesc = document.getElementById("modalDesc");
+
+btnDetail.addEventListener("click", ()=>{
+  const currentTitle = document.getElementById("productTitle").innerText;
+  const product = products.find(p => p.title === currentTitle);
+  if(product){
+    modalImage.src = product.img;
+    modalTitle.innerText = product.title;
+    modalSubtitle.innerText = product.subtitle;
+    // Gunakan formatRupiah juga
+    modalPrice.innerText = formatRupiah(product.price);
+    modalDesc.innerText = product.desc;
+    modal.style.display = "flex";
+  }
+});
+
+modalClose.addEventListener("click", ()=>{ modal.style.display = "none"; });
+window.addEventListener("click", (e)=>{ if(e.target===modal) modal.style.display="none"; });
+
+// Pesan Sekarang via WA
+document.getElementById('btnCart').addEventListener('click', ()=>{
+  const product = document.getElementById('productTitle').innerText;
+  const price = document.getElementById('productPrice').innerText;
+  const url = `https://wa.me/6281234567890?text=Halo,%20saya%20ingin%20memesan%20produk%20${encodeURIComponent(product)}%20dengan%20harga%20${encodeURIComponent(price)}`;
+  window.open(url, '_blank');
+});
+
+// Navigasi smooth scroll
+document.querySelectorAll('nav ul li').forEach(li=>{
+  li.addEventListener('click', ()=>{
+    document.querySelectorAll('nav ul li').forEach(el=>el.classList.remove('active'));
+    li.classList.add('active');
+    const section = document.getElementById(li.dataset.section);
+    if(section) section.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// Our Products grid
+const productGrid = document.getElementById('productGrid');
+products.forEach(p=>{
+  const card = document.createElement('div');
+  card.className='product-card';
+  card.innerHTML = `
+    <img src="${p.img}" alt="${p.title}">
+    <h3>${p.title}</h3>
+    <p>${p.subtitle}</p>
+    <button onclick="window.open('https://wa.me/6281234567890?text=Halo,%20saya%20ingin%20memesan%20produk%20${encodeURIComponent(p.title)}')">Pesan Sekarang</button>
+  `;
+  productGrid.appendChild(card);
+});
+</script>
+
+</body>
+</html>

@@ -309,3 +309,92 @@
   .social-btn img {
     display:block;
   }
+  .experience-panel {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+
+.experience-panel.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.experience-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.experience-card {
+  background: var(--card);
+  padding: 12px;
+  border-radius: 10px;
+  width: 180px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.experience-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.experience-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.exp-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.exp-desc {
+  font-size: 12px;
+  color: #555;
+}
+
+
+
+.sertifikat-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+  margin-top: 20px;
+}
+
+.sertifikat-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.sertifikat-card {
+  border: 2px solid transparent; /* border awal transparan */
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border 0.3s ease, transform 0.3s ease;
+}
+
+.sertifikat-card img {
+  width: 300px;
+  height: auto;
+  display: block;
+}
+
+/* efek hover */
+.sertifikat-card:hover {
+  border: 2px solid #ff4500; /* ganti warna sesuai tema */
+  transform: scale(1.05); /* sedikit membesar */
+}

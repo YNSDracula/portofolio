@@ -1,0 +1,1136 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Toko Premium — Beli via WhatsApp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ <style>
+    /*
+     * SKEMA WARNA BARU:
+     * Dari Biru/Sian menjadi Hitam/Emas (Dark Luxury / Neon Gold)
+     */
+    :root{
+      /* Latar Belakang & Kartu */
+      --bg: #0a0a0a;             /* Deep Dark Charcoal/Black */
+      --card: #1a1a1a;           /* Dark Card Background */
+      --muted: #c2b28f;          /* Elegant Muted Gold/Beige untuk teks yang bisu */
+
+      /* Aksen Utama (Glow) */
+      --accent: #ffb300;         /* Primary Neon Gold/Amber */
+      --accent-2: #ffca28;       /* Secondary Neon Gold/Vibrant Amber */
+
+      /* Efek Transparansi */
+      --glass: rgba(255,255,255,0.05);
+      --success: #66bb6a;        /* Hijau elegan untuk sukses */
+      --max-width:1100px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      font-family: 'Montserrat', system-ui, Arial, sans-serif;
+	  font-weight: 600; /* Atau 700 untuk lebih tebal */
+      margin:0;
+      /* Gradien latar belakang baru dengan aksen emas/amber */
+      background: radial-gradient(800px 400px at 10% 10%, rgba(255,179,0,0.08), transparent 8%),
+                  radial-gradient(600px 300px at 90% 90%, rgba(255,202,40,0.06), transparent 10%),
+                  var(--bg);
+      color:#e8eef4;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      padding-bottom:120px;
+      transition:background-position 0.1s linear;
+      background-attachment: fixed;
+    }
+    .container{
+      max-width:var(--max-width);
+      margin:0 auto;
+      padding:28px;
+    }
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  position: sticky;
+  top: 0;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  background: none; /* hilangkan background */
+  backdrop-filter: none; /* hilangkan blur jika mau */
+  z-index: 1000;
+}
+
+    .brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Logo */
+.logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  font-size: 18px;
+  box-shadow: 0 6px 20px rgba(255,179,0,0.15);
+  transform: translateZ(0);
+  transition: all 0.3s ease; /* animasi hover smooth */
+}
+
+.logo:hover {
+  box-shadow: 0 8px 25px rgba(255,179,0,0.6), 0 0 12px rgba(255,179,0,0.4); /* glow efek emas */
+  transform: scale(1.1); /* sedikit membesar saat hover */
+}
+
+/* Navbar */
+nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease; /* animasi smooth */
+}
+
+nav a:hover {
+  background: var(--glass);
+  color: #fff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3); /* glow halus */
+  transform: translateY(-2px);
+}
+
+    /* HERO */
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+      margin-bottom:36px;
+      min-height:60vh;
+    }
+    .hero-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:16px;padding:28px;position:relative;
+      box-shadow:0 10px 40px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.02);
+      overflow:visible;
+    }
+    .product-title {font-size:34px;font-weight:700;margin:0 0 6px}
+    .product-sub {color:var(--muted);margin-bottom:12px}
+    .hero-desc{color:var(--muted);line-height:1.5;margin-bottom:18px}
+    .hero-cta{display:flex;gap:12px;align-items:center}
+    .btn{
+      padding:12px 18px;border-radius:12px;border:0;cursor:pointer;font-weight:600;
+      /* Gradien tombol (Emas) */
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;
+      /* Box shadow tombol baru (Emas) */
+      box-shadow:0 8px 28px rgba(255,179,0,0.18);
+    }
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:10px 14px}
+    /* Warna harga baru (Amber/Emas Sekunder) */
+    .price{font-size:20px;font-weight:700;color:var(--accent-2);margin-left:8px}
+
+    /* Hero image panel */
+    .hero-panel{
+      padding:20px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      height:100%; display:flex;align-items:center;justify-content:center;position:relative;
+      border:1px solid rgba(255,255,255,0.02);
+      perspective:900px;overflow:visible;
+    }
+    .hero-panel img{width:100%;max-width:360px;border-radius:12px;object-fit:cover;box-shadow:0 20px 80px rgba(0,0,0,0.6);transform-origin:center;}
+
+    /* cinematic glow */
+    .glow-spot{
+      position:absolute;pointer-events:none;filter:blur(40px);opacity:0.12;border-radius:50%;mix-blend-mode:screen;z-index:0;
+    }
+
+    /* Filters */
+    .filters{display:flex;gap:10px;align-items:center;margin:18px 0 12px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.02);color:var(--muted);cursor:pointer;border:1px solid rgba(255,255,255,0.02)}
+    .chip.active{
+      /* Gradien chip aktif (Emas) */
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;
+      /* Box shadow chip aktif baru (Emas) */
+      box-shadow:0 6px 20px rgba(255,179,0,0.12)
+    }
+
+    .search-wrap{margin-left:auto;display:flex;gap:6px}
+    .search{background:var(--card);border:1px solid rgba(255,255,255,0.02);padding:8px 12px;border-radius:12px;color:var(--muted);width:220px}
+    .search:focus{outline:0;color:#fff}
+
+    /* Grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:16px;
+      margin-bottom:32px;
+    }
+    .card{
+      background:var(--card);border-radius:14px;padding:12px;border:1px solid rgba(255,255,255,0.02);
+      transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s;
+      position:relative; overflow:hidden;
+      transform-origin:center bottom;
+    }
+    .card:hover{transform:translateY(-12px) scale(1.02);box-shadow:0 30px 80px rgba(0,0,0,0.6)}
+    .card .img{height:160px;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
+    .card .img img{width:100%;height:100%;object-fit:cover}
+    .card h4{margin:10px 0 6px;font-size:16px}
+    .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:13px}
+    .price-old{color:rgba(255,255,255,0.25);text-decoration:line-through;font-size:13px}
+    .badge{position:absolute;left:12px;top:12px;padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px;background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.03)}
+    .badge.promo{
+      /* Gradien badge promo baru (Kuning/Oranye) */
+      background:linear-gradient(90deg,#ffeb3b,#ff9800);
+      color:#fff
+    }
+    .card .actions{display:flex;gap:8px;margin-top:10px}
+    .mini-btn{padding:8px 10px;border-radius:10px;font-weight:600;border:0;cursor:pointer;background:rgba(255,255,255,0.02);color:var(--muted)}
+    .mini-btn.primary{
+      /* Gradien tombol mini primer (Emas) */
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#fff
+    }
+    .fav{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);cursor:pointer}
+
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  padding: 24px;
+  z-index: 2000;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 980px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  animation: fadeUp 0.25s ease;
+}
+
+/* Gambar produk */
+.modal .img {
+  height: 420px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+}
+
+.modal .img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal h3 {
+  margin-top: 0;
+  color: #fff;
+}
+
+/* Variant pilihan */
+.variant {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.variant button {
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.variant button:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.variant button.active {
+  /* Gradien tombol varian aktif (Emas) */
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #fff;
+  border: 0;
+}
+
+/* Top row */
+.top-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* Animasi modal */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .modal-card {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .modal .img {
+    height: 330px;
+  }
+}
+
+   /* Footer / Contact */
+footer {
+  margin-top: 18px;
+  padding: 24px;
+  border-top: 1px solid rgba(255,255,255,0.02);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.contact-card {
+  background: rgba(20, 20, 25, 0.95); /* background gelap lebih solid */
+  padding: 16px;
+  border-radius: 12px;
+  width: 320px;
+  border: 1px solid rgba(255,255,255,0.1); /* border tipis supaya kotak kelihatan */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.8); /* shadow hitam lebih tebal */
+  transition: all 0.3s ease;
+}
+
+/* Hover efek glow hitam */
+.contact-card:hover {
+  box-shadow: 0 12px 28px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,0.7); /* glow hitam lebih jelas */
+  transform: translateY(-2px);
+}
+
+
+/* Input & Textarea */
+.contact-card input,
+.contact-card textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.02); /* sedikit terlihat */
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+.contact-card input:focus,
+.contact-card textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Small text */
+.small {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+
+    /* Floating WA button */
+    .wa-fab{position:fixed;right:18px;bottom:18px;width:64px;height:64px;border-radius:999px;
+      /* Gradien FAB baru (Emas) */
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;
+      /* Box shadow FAB baru (Emas) */
+      box-shadow:0 14px 40px rgba(255,179,0,0.22);
+      z-index:3000;cursor:pointer}
+    .wa-fab svg{width:28px;height:28px;color:white}
+
+    /* Reveal animations */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1);will-change:transform,opacity}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    .hero-appear{opacity:0;transform:translateY(20px) scale(0.995);transition:opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1)}
+    .hero-appear.show{opacity:1;transform:translateY(0) scale(1)}
+
+    /* subtle tilt effect for hero image on mouse move */
+    .tilt{transition:transform .25s ease;transform-style:preserve-3d}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;grid-auto-rows:auto}
+      .grid{grid-template-columns: repeat(2,1fr)}
+      .search{width:150px}
+      .hero-panel img{max-width:320px}
+    }
+    @media (max-width:520px){
+      .grid{grid-template-columns: 1fr}
+      .hero-panel img{max-width:260px}
+      .search{display:none}
+      nav{display:none}
+      header{padding:6px 0}
+      :root{--max-width:920px}
+    }
+    /* LOADING CINEMATIC */
+.loader-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #0a0a0a; /* Warna latar belakang baru (Hitam Pekat) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    opacity: 1;
+    transition: opacity .8s ease;
+}
+
+.loader-circle {
+    width: 55px;
+    height: 55px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top-color: var(--accent); /* Menggunakan aksen emas */
+    border-radius: 50%;
+    animation: spin 1s linear infinite, glow-gold 1.8s ease-in-out infinite; /* Mengubah nama keyframes */
+}
+
+/* putar */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* efek glow lembut baru (Emas Neon) */
+@keyframes glow-gold {
+    0% { box-shadow: 0 0 5px rgba(255,179,0,.3); }
+    50% { box-shadow: 0 0 15px rgba(255,179,0,.8); }
+    100% { box-shadow: 0 0 5px rgba(255,179,0,.3); }
+}
+
+/* efek glow lembut lama dihapus, diganti glow-gold */
+@keyframes glow {
+    0% { box-shadow: 0 0 5px rgba(255,255,255,.2); }
+    50% { box-shadow: 0 0 15px rgba(255,255,255,.6); }
+    100% { box-shadow: 0 0 5px rgba(255,255,255,.2); }
+}
+/* Reveal smooth */
+.reveal{
+  opacity:0;
+  transform:translateY(20px);
+  transition:.8s ease;
+}
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+/* Page Fade-in */
+body {
+    opacity: 0;
+    animation: pageFade .9s ease forwards;
+}
+@keyframes pageFade {
+    to { opacity: 1; }
+}
+.card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: .7s ease;
+}
+
+.card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* HERO */
+.hero{
+    height:100vh;
+    width:100%;
+    background: transparent; /* TRANSPARAN */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:0 8%;
+    position:relative;
+    overflow:hidden;
+}
+
+/* TEKS */
+.hero-content h1{
+    font-size:3.2rem;
+    font-weight:700;
+    color:white;
+    margin:0;
+    animation: float 4s ease-in-out infinite;
+}
+
+.hero-content p{
+    font-size:1.2rem;
+    color:#e0e0e0;
+    margin-top:15px;
+    animation: float2 5s ease-in-out infinite;
+}
+
+/* EFEK BERGERAK */
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes float2 {
+    0% { transform: translateY(0); opacity: 0.9; }
+    50% { transform: translateY(10px); opacity: 1; }
+    100% { transform: translateY(0); opacity: 0.9; }
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+	  
+        <div class="logo">YP</div>
+        <div>
+
+          <div style="font-weight:700">YP Store</div>
+          <div style="font-size:12px;color:var(--muted)">Premium shop • Beli via WhatsApp</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#products">Produk</a>
+        <a href="#about">Tentang</a>
+		 <a href="#contact">Kontak</a>
+      </nav>
+    </header>
+	
+	<section class="hero-simple">
+  <div class="hero-text">
+    <h1>Toko Premium Online</h1>
+    <p>Menjual Kaos, Parfum, Elektronik & Aksesoris Berkualitas.  
+    Belanja mudah, cepat, dan terpercaya.</p>
+  </div>
+</section>
+
+
+<video autoplay muted loop id="bgVideo">
+  <source src="video.mp4" type="video/mp4">
+</video>
+
+<style>
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+</style>
+
+	
+	
+<!-- LOADING CINEMATIC -->
+<div id="loader" class="loader-screen">
+  <div class="loader-circle"></div>
+</div>
+
+
+
+    <!-- Filters -->
+    <div class="top-row">
+      <div class="filters">
+        <div class="chips" id="categoryChips">
+          <!-- chips inserted by JS -->
+        </div>
+        <div style="margin-left:12px" class="small">Filter:</div>
+      </div>
+
+      <div class="search-wrap">
+        <input class="search" id="searchInput" placeholder="Cari produk..." />
+        <button class="mini-btn" id="clearSearch">Reset</button>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <section id="products">
+      <div class="grid" id="productGrid">
+	  <div class="grid" id="productGrid" class="reveal">
+
+        <!-- product cards rendered by JS -->
+      </div>
+    </section>
+
+    <!-- About & Testimonials -->
+    <section id="about" style="margin-bottom:22px">
+      <h2 style="margin:0 0 8px">Tentang Kami</h2>
+	  <section id="about" class="reveal">
+
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="width:120px;height:120px;border-radius:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:20px">YP</div>
+        <div style="max-width:760px">
+          <div style="font-weight:700">YP Store — Toko premium online</div>
+          <div class="small" style="margin-top:6px">Menjual produk kaos, parfum, elektronik, dan aksesoris berkualitas. Transaksi mudah via WhatsApp, packing rapi, dan bergaransi sampai tujuan.</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="contact-card">
+	<footer id="contact" class="reveal">
+
+      <div style="font-weight:700">Kontak Cepat</div>
+      <div class="small" style="margin-bottom:8px">Isi form ini, lalu pesan akan dikirim lewat WhatsApp</div>
+      <input id="contactName" placeholder="Nama" />
+      <input id="contactPhone" placeholder="Nomor/WA" />
+      <textarea id="contactMsg" rows="3" placeholder="Pesan (contoh: Saya ingin info produk parfum Luxuria)"></textarea>
+      <button class="btn" onclick="sendContactForm()">Kirim via WhatsApp</button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
+      <div style="text-align:right">
+        <div style="font-weight:700">YP Store</div>
+        <div class="small">Contact: +6282246814123</div>
+      </div>
+      <div class="small">Alamat: Jl. Contoh No.1, Kota • Jam kerja: 09:00 - 18:00</div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <a class="chip" href="#" onclick="contactViaWA('Halo saya ingin bertanya tentang produk')">Hubungi WA</a>
+        <a class="chip" href="#">Kebijakan</a>
+        <a class="chip" href="#">FAQ</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Chat -->
+<div class="wa-fab" id="waFab" title="Hubungi via Chat" onclick="contactViaWA('Halo, saya ingin bertanya')">
+  <svg viewBox="0 0 24 24" fill="white" style="width:28px;height:28px">
+    <path d="M4 4h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H8l-4 3v-3H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
+  </svg>
+</div>
+
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div>
+        <div class="img" id="modalImg"><img src="" alt=""></div>
+      </div>
+      <div>
+        <h3 id="modalTitle">Product Title</h3>
+        <div class="small" id="modalCategory">Kategori</div>
+        <div style="margin-top:8px;font-size:20px;font-weight:700" id="modalPrice">IDR 199.000</div>
+        <div class="small" id="modalStock">Stok: 10</div>
+        <p class="small" id="modalDesc" style="margin-top:12px">Deskripsi</p>
+
+        <div>
+          <div style="margin-top:10px;font-weight:700">Varian</div>
+          <div class="variant" id="modalVariants"></div>
+        </div>
+
+        <div style="margin-top:18px;display:flex;gap:8px">
+          <button class="btn" id="modalBuy">Beli via WhatsApp</button>
+          <button class="btn ghost" id="modalWishlist">Tambah Wishlist</button>
+          <button class="btn ghost" id="modalClose">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<script>
+// HIDE LOADER CINEMATIC
+window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+
+    // kecilkan delay untuk efek lebih smooth
+    setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 800);
+    }, 300); 
+});
+</script>
+
+<script>
+  /********* CONFIG: Ganti nomor WA di sini (format internasional tanpa +), contoh: 6281234567890 *********/
+  const WA_NUMBER = '628XXXXXXXXXXX';
+
+  /********* Sample product data *********/
+const products = [
+  /* ===================== PAKAIAN ===================== */
+  {
+    id: 1,
+    title: "ECTOZ BLESSING",
+    category: "Pakaian",
+    price: 120000,
+    oldPrice: 0,
+    stock: 20,
+    img: "img/kaos1.jpg",  // GANTI DENGAN GAMBAR KAMU
+    badge: "New",
+    desc: "Kaos premium bahan cotton combed 30s, nyaman dipakai.",
+    variants: ["M", "L", "XL"]
+  },
+  {
+    id: 2,
+    title: "ECTOZ FIZZGE",
+    category: "Pakaian",
+    price: 199000,
+    oldPrice: 249000,
+    stock: 15,
+    img: "img/kaos2.jpg",  // GANTI DENGAN GAMBAR KAMU
+    badge: "Best Seller",
+    desc: "Kaos Premium lembut, cocok dipakai harian.",
+    variants: ["M", "L", "XL"]
+  },
+
+  /* ===================== ELEKTRONIK ===================== */
+  {
+    id: 3,
+    title: "LAPTOP ASUS PRO 100",
+    category: "Elektronik",
+    price: 399000,
+    oldPrice: 499000,
+    stock: 12,
+    img: "img/laptop1.jpg",  // GANTI DENGAN GAMBAR KAMU
+    badge: "Promo",
+    desc: "Laptop kuat, battery 12 jam.",
+    variants: ["Black", "White"]
+  },
+  {
+    id: 4,
+    title: "LAPTOP ASUS PROMAX 1000",
+    category: "Elektronik",
+    price: 329000,
+    oldPrice: 0,
+    stock: 9,
+    img: "img/laptop2.jpg",  // GANTI DENGAN GAMBAR KAMU
+    badge: "Limited",
+    desc: "Laptop gaming 7.1.",
+    variants: ["Black"]
+  },
+
+  /* ===================== AKSESORIS ===================== */
+  {
+    id: 5,
+    title: "Gelang Black Mamba",
+    category: "Aksesoris",
+    price: 85000,
+    oldPrice: 0,
+    stock: 30,
+    img: "img/gelang2.jpg",  // GANTI DENGAN GAMBAR KAMU
+    badge: "",
+    desc: "Gelang premium.",
+    variants: ["One Size"]
+  },
+  {
+    id: 6,
+    title: "Gelang Stainless",
+    category: "Aksesoris",
+    price: 59000,
+    oldPrice: 0,
+    stock: 50,
+    img: "img/gelang1.jpg",  // GANTI DENGAN GAMBAR KAMU
+    badge: "New",
+    desc: "Gelang elegan tahan karat.",
+    variants: ["One Size"]
+  },
+
+  /* ===================== PARFUM ===================== */
+  {
+    id: 7,
+    title: "Parfum Nightfall Fck You",
+    category: "Parfum",
+    price: 229000,
+    oldPrice: 279000,
+    stock: 8,
+    img: "img/parfum1.jpg",  // GANTI DENGAN GAMBAR KAMU
+    badge: "Exclusive",
+    desc: "Aroma woody & spicy yang tahan lama.",
+    variants: ["50ml"]
+  },
+  {
+    id: 8,
+    title: "Parfum Valentino Rossi",
+    category: "Parfum",
+    price: 249000,
+    oldPrice: 299000,
+    stock: 6,
+    img: "img/parfum2.jpg",  // GANTI DENGAN GAMBAR KAMU
+    badge: "Hot",
+    desc: "Aroma floral lembut dengan sentuhan sweet.",
+    variants: ["50ml"]
+  }
+];
+
+  /* UI references */
+  const grid = document.getElementById('productGrid');
+  const categoryChips = document.getElementById('categoryChips');
+  const searchInput = document.getElementById('searchInput');
+  const clearSearch = document.getElementById('clearSearch');
+
+  /* Modal refs */
+  const modal = document.getElementById('modal');
+  const modalImg = document.getElementById('modalImg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalPrice = document.getElementById('modalPrice');
+  const modalStock = document.getElementById('modalStock');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalVariants = document.getElementById('modalVariants');
+  const modalBuy = document.getElementById('modalBuy');
+  const modalWishlist = document.getElementById('modalWishlist');
+  const modalClose = document.getElementById('modalClose');
+
+  /* hero */
+  const heroTitle = document.getElementById('heroTitle');
+  const heroDesc = document.getElementById('heroDesc');
+  const heroPrice = document.getElementById('heroPrice');
+  const heroImg = document.getElementById('heroImg');
+  const buyHero = document.getElementById('buyHero');
+  const viewHero = document.getElementById('viewHero');
+  const heroCard = document.getElementById('heroCard');
+  const heroPanel = document.getElementById('heroPanel');
+
+  let activeCategory = 'Semua';
+  let wishlist = JSON.parse(localStorage.getItem('yp_wishlist')||'[]');
+  let selectedProduct = null;
+
+  function init(){
+    renderCategories();
+    renderGrid(products);
+    setupSearch();
+    setupHero(products[0]);
+    buyHero.addEventListener('click', ()=> contactViaWA(`Saya ingin membeli: ${products[0].title} - ${formatRupiah(products[0].price)}`));
+    viewHero.addEventListener('click', ()=> openModal(products[0]));
+
+    // entrance animations
+    requestAnimationFrame(()=>{
+      heroCard.classList.add('show');
+      // stagger reveal elements
+      document.querySelectorAll('.reveal').forEach((el,i)=> setTimeout(()=> el.classList.add('visible'), 140*i));
+    });
+
+    setupScrollReveal();
+    setupNavOffsets();
+    setupParallax();
+    setupHeroTilt();
+  }
+
+  function formatRupiah(n){
+    return new Intl.NumberFormat('id-ID').format(n);
+  }
+
+  function renderCategories(){
+    const cats = ['Semua', ...Array.from(new Set(products.map(p=>p.category)))];
+    categoryChips.innerHTML = '';
+    cats.forEach(cat=>{
+      const el = document.createElement('button');
+      el.className = 'chip' + (cat===activeCategory ? ' active' : '');
+      el.textContent = cat;
+      el.onclick = ()=>{ activeCategory = cat; document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active')); el.classList.add('active'); applyFilters(); }
+      categoryChips.appendChild(el);
+    });
+  }
+
+  function setupSearch(){
+    searchInput.addEventListener('input', applyFilters);
+    clearSearch.addEventListener('click', ()=>{ searchInput.value=''; applyFilters(); });
+  }
+
+  function applyFilters(){
+    const q = searchInput.value.trim().toLowerCase();
+    let filtered = products.filter(p=>{
+      const inCat = activeCategory==='Semua' || p.category===activeCategory;
+      const inText = p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
+      return inCat && inText;
+    });
+    renderGrid(filtered);
+  }
+
+  function renderGrid(list){
+    grid.innerHTML = '';
+    if(list.length===0){ grid.innerHTML = '<div class="small" style="padding:12px">Produk tidak ditemukan.</div>'; return; }
+    list.forEach((p, idx)=>{
+      const card = document.createElement('div'); card.className='card reveal';
+      card.innerHTML = `
+        ${p.badge ? `<div class="badge ${p.badge.toLowerCase().includes('promo')?'promo':''}">${p.badge}</div>` : ''}
+        <div class="fav" title="Tambah ke wishlist" onclick="toggleWishlist(${p.id}, event)">${wishlist.includes(p.id)?'💖':'🤍'}</div>
+        <div class="img"><img src="${p.img}" alt="${p.title}"></div>
+        <h4>${p.title}</h4>
+        <div class="meta"><div class="small">${p.category} • ⭐ 4.7</div><div><span class="price-old">${p.oldPrice?formatRupiah(p.oldPrice):''}</span> <span style="font-weight:700;color:var(--accent-2)">IDR ${formatRupiah(p.price)}</span></div></div>
+        <div class="actions">
+          <button class="mini-btn primary" onclick="openModalById(${p.id})">Detail</button>
+          <button class="mini-btn" onclick="contactViaWA('Saya ingin membeli ${encodeURIComponent(p.title)}')">Beli via WA</button>
+        </div>
+      `;
+      grid.appendChild(card);
+      // small stagger for grid reveal
+      setTimeout(()=> card.classList.add('visible'), 80*idx);
+    });
+  }
+
+  function openModalById(id){
+    const p = products.find(x=>x.id===id);
+    if(p) openModal(p);
+  }
+
+  function openModal(p){
+    selectedProduct = p;
+    modalImg.innerHTML = `<img src="${p.img}" alt="${p.title}">`;
+    modalTitle.textContent = p.title;
+    modalPrice.textContent = `IDR ${formatRupiah(p.price)}`;
+    modalStock.textContent = `Stok: ${p.stock}`;
+    modalDesc.textContent = p.desc;
+    modalVariants.innerHTML = '';
+    p.variants.forEach((v,i)=>{
+      const btn = document.createElement('button'); btn.textContent = v;
+      btn.onclick = ()=>{ document.querySelectorAll('#modalVariants button').forEach(el=>el.classList.remove('active')); btn.classList.add('active'); }
+      if(i===0) btn.classList.add('active');
+      modalVariants.appendChild(btn);
+    });
+    modalBuy.onclick = ()=> contactViaWA(buildOrderMessage(p));
+    modalWishlist.onclick = ()=>{ toggleWishlist(p.id); }
+    modalClose.onclick = ()=> modal.classList.remove('open');
+    modal.classList.add('open');
+  }
+
+  function buildOrderMessage(p){
+    const variant = document.querySelector('#modalVariants button.active')?.textContent || p.variants[0] || '';
+    const message = `Saya mau pesan:%0A- Produk: ${encodeURIComponent(p.title)}%0A- Varian: ${encodeURIComponent(variant)}%0A- Harga: IDR ${formatRupiah(p.price)}%0A- Jumlah: 1%0A- Alamat: (isi alamat Anda)`;
+    return message;
+  }
+
+  function contactViaWA(text){
+    // text: string message (not encoded). If message contains already encoded parts, pass directly
+    let encoded = typeof text === 'string' ? encodeURIComponent(text) : text;
+    // if text already contains %0A etc, we assume it's encoded, just ensure not double encode
+    if(/(%0A|%20|%3A)/.test(text)) encoded = text;
+    const url = `https://wa.me/${6282246814033}?text=${encoded}`;
+    window.open(url, '_blank');
+  }
+
+  function sendContactForm(){
+    const name = document.getElementById('contactName').value.trim();
+    const phone = document.getElementById('contactPhone').value.trim();
+    const msg = document.getElementById('contactMsg').value.trim();
+    if(!name || !phone || !msg){ alert('Silakan lengkapi form sebelum mengirim.'); return; }
+    const composed = `Halo, saya *${name}* (${phone})%0A%0A${encodeURIComponent(msg)}%0A%0ATerima kasih.`;
+    contactViaWA(composed);
+  }
+
+  function toggleWishlist(id, event){
+    if(event) event.stopPropagation();
+    const idx = wishlist.indexOf(id);
+    if(idx===-1) wishlist.push(id); else wishlist.splice(idx,1);
+    localStorage.setItem('yp_wishlist', JSON.stringify(wishlist));
+    renderGrid(products.filter(p=> activeCategory==='Semua' || p.category===activeCategory));
+  }
+
+  function setupHero(p){
+    heroTitle.textContent = p.title;
+    heroDesc.textContent = p.desc;
+    heroPrice.textContent = formatRupiah(p.price);
+    heroImg.src = p.img;
+  }
+
+  // close modal when clicking outside
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.classList.remove('open'); });
+
+  // Smooth scroll offset for sticky header
+  function setupNavOffsets(){
+    document.querySelectorAll('nav a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (ev)=>{
+        ev.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if(!target) return;
+        const headerOffset = document.querySelector('header').offsetHeight + 8;
+        const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - headerOffset;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+      });
+    });
+  }
+
+  // Scroll reveal using IntersectionObserver
+  function setupScrollReveal(){
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('visible'); }
+      });
+    },{threshold:0.12});
+
+    document.querySelectorAll('.reveal').forEach(el=> obs.observe(el));
+  }
+
+  // Parallax background subtle movement + glow reposition
+  function setupParallax(){
+    const glowA = document.getElementById('glowA');
+    const glowB = document.getElementById('glowB');
+    window.addEventListener('scroll', ()=>{
+      const y = window.scrollY;
+      // move background radial positions (subtle)
+      document.body.style.backgroundPosition = `${10 - y*0.02}% ${10 - y*0.03}%, ${90 + y*0.01}% ${90 + y*0.02}%`;
+      // move glows
+      if(glowA) glowA.style.transform = `translateY(${y*0.06}px) translateX(${y*0.02}px)`;
+      if(glowB) glowB.style.transform = `translateY(${-y*0.04}px) translateX(${-y*0.03}px)`;
+    }, {passive:true});
+  }
+
+  // subtle tilt for hero image based on mouse movement
+  function setupHeroTilt(){
+    const img = heroImg;
+    const panel = heroPanel;
+    panel.addEventListener('mousemove', (e)=>{
+      const rect = panel.getBoundingClientRect();
+      const cx = rect.left + rect.width/2;
+      const cy = rect.top + rect.height/2;
+      const dx = (e.clientX - cx)/rect.width;
+      const dy = (e.clientY - cy)/rect.height;
+      img.style.transform = `rotateY(${dx*6}deg) rotateX(${ -dy*6 }deg) translateZ(10px)`;
+    });
+    panel.addEventListener('mouseleave', ()=>{ img.style.transform='translateZ(0)'; });
+  }
+
+  // init
+  init();
+
+  // Expose some helpers to window (used by inline onclick)
+  window.contactViaWA = function(msg){
+    // accept plain text OR encoded
+    if(msg.startsWith('http')) window.open(msg,'_blank');
+    else {
+      // if msg looks like encoded string with %0A, assume encoded
+      const encoded = /%0A|%20|%3A/.test(msg) ? msg : encodeURIComponent(msg);
+      const url = `https://wa.me/${WA_NUMBER}?text=${encoded}`;
+      window.open(url,'_blank');
+    }
+  };
+  window.openModalById = openModalById;
+  window.toggleWishlist = toggleWishlist;
+</script>
+<script>
+// ====== SMOOTH SCROLL UNTUK MENU NAV ======
+document.querySelectorAll('nav a').forEach(link => {
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if(target){
+      window.scrollTo({
+        top: target.offsetTop - 80,
+        behavior: 'smooth'
+      });
+    }
+  });
+});
+
+// ====== REVEAL ON SCROLL ======
+const revealElements = document.querySelectorAll('.reveal');
+function revealOnScroll(){
+  revealElements.forEach(el => {
+    const top = el.getBoundingClientRect().top;
+    if(top < window.innerHeight - 80){
+      el.classList.add('visible');
+    }
+  });
+}
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
+
+// ====== ANIMASI MUNCUL SAAT HALAMAN LOAD ======
+window.onload = () => {
+  document.querySelectorAll('.hero, header, #products, #about, footer')
+    .forEach(el => {
+      el.style.opacity = 0;
+      el.style.transform = "translateY(20px)";
+      setTimeout(() => {
+        el.style.transition = "1s ease";
+        el.style.opacity = 1;
+        el.style.transform = "translateY(0)";
+      }, 150);
+    });
+
+  // Hapus loader cinematic
+  const loader = document.getElementById('loader');
+  setTimeout(() => loader.style.opacity = 0, 400);
+  setTimeout(() => loader.style.display = "none", 1200);
+};
+</script>
+<script>
+document.querySelectorAll('nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+</script>
+<script>
+const revealEls = document.querySelectorAll('.reveal');
+
+function revealOnScroll(){
+  revealEls.forEach(el => {
+    const rect = el.getBoundingClientRect().top;
+    if(rect < window.innerHeight - 70){
+      el.classList.add('visible');
+    }
+  });
+}
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
+</script>
+<script>
+function showCards(){
+  document.querySelectorAll('.card').forEach(c => {
+    const rect = c.getBoundingClientRect().top;
+    if(rect < window.innerHeight - 30){
+      c.classList.add('show');
+    }
+  });
+}
+window.addEventListener('scroll', showCards);
+window.addEventListener('load', showCards);
+</script>
+
+</body>
+</html>
